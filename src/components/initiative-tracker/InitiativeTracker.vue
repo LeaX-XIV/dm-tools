@@ -16,11 +16,11 @@ const characters = ref<WithInitiative[]>([]);
 const ordered = computed(() => characters.value.toSorted((a, b) => b.initiative - a.initiative));
 
 function isCharacter(item: WithInitiative): item is Character {
-  return item.constructor.name === "Character";
+  return item instanceof Character;
 }
 
 function isInitiativeCount(item: WithInitiative): item is InitiativeCount {
-  return item.constructor.name === "InitiativeCount";
+  return item instanceof InitiativeCount;
 }
 </script>
 
