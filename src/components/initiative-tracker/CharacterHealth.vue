@@ -29,7 +29,7 @@ const styleObject = {
 </script>
 
 <template>
-  <div :class="classObject">
+  <div class="characterHealth" :class="classObject">
     <div style="text-align: center">
       <span v-if="hasCurrent" class="hitPointsCurrent">{{ current }}</span>
       <span v-if="hasAll">/</span>
@@ -46,58 +46,64 @@ $strokeWidth: 3px;
 $strokeColor: black;
 $svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" width="#{$w}" height="#{$h}"><polyline fill="none" stroke-width="#{$strokeWidth}" stroke="#{$strokeColor}" points="2.4,58.7 70.8,58.7 76.1,46.2 81.1,58.7 89.9,58.7 93.8,66.5 102.8,22.7 110.6,78.7 115.3,58.7 126.4,58.7 134.4,54.7 142.4,58.7 197.8,58.7 "/></svg>';
 
-.pulse {
-  --animation-duration-factor: 1;
-  --animation-duration: calc(
-    (2s + var(--artificial-animation-jitter)) * var(--animation-duration-factor)
-  );
+.characterHealth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-  height: $h;
-  width: $w;
-  overflow: hidden;
-  position: relative;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  // heartbeat gfx
-  &:after {
-    content: "";
-    display: block;
-    background: url("data:image/svg+xml;utf8,#{$svg}") 0 0 no-repeat;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    animation: var(--animation-duration) pulse infinite linear;
-    animation-delay: var(--artificial-delay);
-  }
-  // flat opaque line
-  &:before {
-    content: "";
-    background: #eee;
-    position: absolute;
-    z-index: -1;
-    left: #{$w * 0.02};
-    right: #{$w * 0.02};
+  & .pulse {
+    --animation-duration-factor: 1;
+    --animation-duration: calc(
+      (2s + var(--artificial-animation-jitter)) * var(--animation-duration-factor)
+    );
+
+    height: $h;
+    width: $w;
+    overflow: hidden;
+    position: relative;
+    top: 0;
     bottom: 0;
-    top: #{$h * 0.16}; // the SVG isn't exacly centered..
-    margin: auto;
-    height: $strokeWidth;
-  }
-  .bloodied & {
-    --animation-duration-factor: 1 / 2.85;
-    $strokeColor: red;
-    $svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" width="#{$w}" height="#{$h}"><polyline fill="none" stroke-width="#{$strokeWidth}" stroke="#{$strokeColor}" points="2.4,58.7 70.8,58.7 76.1,46.2 81.1,58.7 89.9,58.7 93.8,66.5 102.8,22.7 110.6,78.7 115.3,58.7 126.4,58.7 134.4,54.7 142.4,58.7 197.8,58.7 "/></svg>';
+    left: 0;
+    right: 0;
+    // heartbeat gfx
     &:after {
+      content: "";
+      display: block;
       background: url("data:image/svg+xml;utf8,#{$svg}") 0 0 no-repeat;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      animation: var(--animation-duration) pulse infinite linear;
+      animation-delay: var(--artificial-delay);
     }
-  }
-  .dead & {
-    --animation-duration-factor: 1.5;
-    $svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" width="#{$w}" height="#{$h}"><polyline fill="none" stroke-width="#{$strokeWidth}" stroke="#{$strokeColor}" points="2.4,58.7 197.8,58.7 "/></svg>';
-    &:after {
-      background: url("data:image/svg+xml;utf8,#{$svg}") 0 0 no-repeat;
-      animation-name: flat;
+    // flat opaque line
+    &:before {
+      content: "";
+      background: #eee;
+      position: absolute;
+      z-index: -1;
+      left: #{$w * 0.02};
+      right: #{$w * 0.02};
+      bottom: 0;
+      top: #{$h * 0.16}; // the SVG isn't exacly centered..
+      margin: auto;
+      height: $strokeWidth;
+    }
+    .bloodied & {
+      --animation-duration-factor: 1 / 2.85;
+      $strokeColor: red;
+      $svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" width="#{$w}" height="#{$h}"><polyline fill="none" stroke-width="#{$strokeWidth}" stroke="#{$strokeColor}" points="2.4,58.7 70.8,58.7 76.1,46.2 81.1,58.7 89.9,58.7 93.8,66.5 102.8,22.7 110.6,78.7 115.3,58.7 126.4,58.7 134.4,54.7 142.4,58.7 197.8,58.7 "/></svg>';
+      &:after {
+        background: url("data:image/svg+xml;utf8,#{$svg}") 0 0 no-repeat;
+      }
+    }
+    .dead & {
+      --animation-duration-factor: 1.5;
+      $svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" width="#{$w}" height="#{$h}"><polyline fill="none" stroke-width="#{$strokeWidth}" stroke="#{$strokeColor}" points="2.4,58.7 197.8,58.7 "/></svg>';
+      &:after {
+        background: url("data:image/svg+xml;utf8,#{$svg}") 0 0 no-repeat;
+        animation-name: flat;
+      }
     }
   }
 }

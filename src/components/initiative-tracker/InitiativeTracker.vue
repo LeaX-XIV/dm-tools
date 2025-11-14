@@ -40,6 +40,6 @@ function isInitiativeCount(item: WithInitiative): item is InitiativeCount {
   display: flex;
   flex-direction: column;
 
-  row-gap: 5px;
+  row-gap: 1.5em;
 }
 </style>

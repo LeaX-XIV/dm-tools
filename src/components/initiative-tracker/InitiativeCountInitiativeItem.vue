@@ -6,21 +6,34 @@ const { initiativeCount } = defineProps<{ initiativeCount: InitiativeCount }>();
 </script>
 
 <template>
-  <div style="display: flex; align-items: center">
+  <div class="initiativeCount">
     <div class="line"></div>
-    <span>{{ initiativeCount.initiative }}</span>
-    <span v-if="initiativeCount.name">&nbsp;- {{ initiativeCount.name }}</span>
+    <div class="text">
+      <span>{{ initiativeCount.initiative }}</span>
+      <span v-if="initiativeCount.name">&nbsp;- {{ initiativeCount.name }}</span>
+    </div>
   </div>
 </template>
 
-<style scoped>
-* {
-  color: red;
-}
+<style lang="scss" scoped>
+.initiativeCount {
+  display: flex;
+  align-items: center;
 
-.line {
-  width: 75vw;
-  height: 2px;
-  background-color: currentColor;
+  margin-top: -0.75em;
+  margin-bottom: -0.75em;
+
+  color: red;
+
+  & .line {
+    width: 75vw;
+    height: 2px;
+    background-color: currentColor;
+  }
+
+  & .text {
+    margin-left: 1em;
+    text-wrap: nowrap;
+  }
 }
 </style>
