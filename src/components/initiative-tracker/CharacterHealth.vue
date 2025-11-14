@@ -11,19 +11,9 @@ const hasCurrent = computed(() => current !== null);
 const hasMax = computed(() => max !== null);
 const hasAll = computed(() => hasCurrent.value && hasMax.value);
 
-const isDead = computed(
-  () =>
-    hasCurrent.value &&
-    current !== null && // Needed fot type checking
-    current <= 0,
-);
+const isDead = computed(() => hasCurrent.value && current! <= 0);
 const isBloodied = computed(
-  () =>
-    hasAll.value &&
-    current !== null && // Needed fot type checking
-    max !== null && // Needed fot type checking
-    !isDead.value &&
-    max * bloodiedThresh >= current,
+  () => hasAll.value && !isDead.value && max! * bloodiedThresh >= current!,
 );
 
 const classObject = reactive({
