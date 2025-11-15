@@ -37,8 +37,8 @@ const classObject = reactive({
             $emit('update-hit-points-current', creature, Number($event.target.value))
           "
         />
-        <span v-if="hasAll">/</span>
-        <span v-if="hasMax" class="hitPointsMax">{{ creature.hitPointsMax }}</span>
+        <span v-if="hasAll"> / </span>
+        <span v-if="hasMax" class="hitPointsMax"> {{ creature.hitPointsMax }}</span>
       </div>
       <CreaturePulse
         v-if="hasAll"
