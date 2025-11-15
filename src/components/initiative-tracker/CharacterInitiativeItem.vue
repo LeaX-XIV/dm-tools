@@ -5,6 +5,10 @@ import Character from "@model/Character.ts";
 
 const { character } = defineProps<{ character: Character }>();
 
+const hasCurrent = computed(() => character.hitPointsCurrent !== null);
+const hasMax = computed(() => character.hitPointsMax !== null);
+const hasAll = computed(() => hasCurrent.value && hasMax.value);
+
 const isDead = computed(() => character.isDead);
 
 const classObject = reactive({
@@ -17,11 +21,20 @@ const classObject = reactive({
     <span class="name">{{ character.name }}</span>
     <span class="initiativeCount">{{ character.initiative }}</span>
     <span v-if="character.armorClass" class="armorClass">{{ character.armorClass }}</span>
-    <CharacterHealth
-      class="health"
-      :current="character.hitPointsCurrent"
-      :max="character.hitPointsMax"
-    />
+
+    <div class="health" :class="classObject">
+      <div style="text-align: center">
+        <span v-if="hasCurrent" class="hitPointsCurrent">{{ character.hitPointsCurrent }}</span>
+        <span v-if="hasAll">/</span>
+        <span v-if="hasMax" class="hitPointsMax">{{ character.hitPointsMax }}</span>
+      </div>
+      <CharacterHealth
+        v-if="hasAll"
+        class="health"
+        :current="character.hitPointsCurrent!"
+        :max="character.hitPointsMax!"
+      />
+    </div>
   </div>
 </template>
 
@@ -88,6 +101,10 @@ const classObject = reactive({
     grid-column-end: end;
     grid-row-start: 2;
     grid-row-end: auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 }
 </style>
