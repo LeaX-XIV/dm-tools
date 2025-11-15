@@ -68,12 +68,14 @@ function save() {
             :required="isEnemy"
           />
           <input
+            v-if="isEnemy"
             v-model.lazy="hitPointsMax"
             type="number"
             placeholder="Punti ferita Massimi"
             :required="isEnemy"
           />
           <input
+            v-if="isEnemy"
             v-model.lazy="hitPointsCurrent"
             type="number"
             placeholder="Punti ferita attuali"
