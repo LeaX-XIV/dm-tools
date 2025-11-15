@@ -28,7 +28,13 @@ function isInitiativeCount(item: WithInitiative): item is InitiativeCount {
   <NewInitiativeCount @new-initiative-count="(ic) => initiatives.push(ic)" />
   <div class="tracker-container">
     <template v-for="(item, idx) in ordered" :key="idx">
-      <CreatureInitiative v-if="isCreature(item)" :creature="item" />
+      <CreatureInitiative
+        v-if="isCreature(item)"
+        :creature="item"
+        @update-hit-points-current="
+          (creature, newHitPoints) => (creature.hitPointsCurrent = newHitPoints)
+        "
+      />
       <InitiativeCountInitiativeItem v-if="isInitiativeCount(item)" :initiativeCount="item" />
     </template>
   </div>

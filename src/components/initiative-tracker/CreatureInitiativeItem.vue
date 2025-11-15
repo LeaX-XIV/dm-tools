@@ -3,6 +3,10 @@ import { reactive, computed } from "vue";
 import CreaturePulse from "./CreaturePulse.vue";
 import Creature from "@/model/Creature";
 
+defineEmits<{
+  (e: "update-hit-points-current", creature: Creature, newHitPoints: number): void;
+}>();
+
 const { creature } = defineProps<{ creature: Creature }>();
 
 const hasCurrent = computed(() => creature.hitPointsCurrent !== null);
@@ -24,7 +28,15 @@ const classObject = reactive({
 
     <div class="health" :class="classObject">
       <div style="text-align: center">
-        <span v-if="hasCurrent" class="hitPointsCurrent">{{ creature.hitPointsCurrent }}</span>
+        <input
+          v-if="hasCurrent"
+          type="number"
+          class="hitPointsCurrent"
+          :value="creature.hitPointsCurrent"
+          @change.stop.prevent="
+            $emit('update-hit-points-current', creature, Number($event.target.value))
+          "
+        />
         <span v-if="hasAll">/</span>
         <span v-if="hasMax" class="hitPointsMax">{{ creature.hitPointsMax }}</span>
       </div>
@@ -105,6 +117,11 @@ const classObject = reactive({
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    & input {
+      max-width: 5ch;
+      text-align: end;
+    }
   }
 }
 </style>
