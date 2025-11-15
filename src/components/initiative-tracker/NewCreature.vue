@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import Character from "@model/Character";
+import Creature from "@/model/Creature";
 const emit = defineEmits<{
-  (e: "new-character", character: Character): void;
+  (e: "new-creature", creature: Creature): void;
 }>();
 
 const open = ref(false);
@@ -30,8 +30,8 @@ function save() {
   const count = Number(number.value);
   for (let i = 0; i < count; ++i) {
     emit(
-      "new-character",
-      new Character(
+      "new-creature",
+      new Creature(
         isEnemy.value ? `${name.value} ${i + 1}` : name.value,
         Number(initiative.value),
         armorClass.value ? Number(armorClass.value) : undefined,

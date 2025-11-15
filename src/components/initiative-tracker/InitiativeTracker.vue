@@ -1,22 +1,21 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import CharacterInitiativeItem from "./CharacterInitiativeItem.vue";
+import CreatureInitiative from "./CreatureInitiativeItem.vue";
 import InitiativeCountInitiativeItem from "./InitiativeCountInitiativeItem.vue";
-import NewCharacter from "./NewCharacter.vue";
-import Character from "@model/Character.ts";
-import InitiativeCount from "@model/InitiativeCount.ts";
+import Creature from "@/model/Creature";
+import NewCreature from "./NewCreature.vue";
+import InitiativeCount from "@model/InitiativeCount";
 import NewInitiativeCount from "./NewInitiativeCount.vue";
 
 interface WithInitiative {
   initiative: number;
 }
 
-const characters = ref<WithInitiative[]>([]);
+const initiatives = ref<WithInitiative[]>([]);
+const ordered = computed(() => initiatives.value.toSorted((a, b) => b.initiative - a.initiative));
 
-const ordered = computed(() => characters.value.toSorted((a, b) => b.initiative - a.initiative));
-
-function isCharacter(item: WithInitiative): item is Character {
-  return item instanceof Character;
+function isCreature(item: WithInitiative): item is Creature {
+  return item instanceof Creature;
 }
 
 function isInitiativeCount(item: WithInitiative): item is InitiativeCount {
@@ -25,11 +24,11 @@ function isInitiativeCount(item: WithInitiative): item is InitiativeCount {
 </script>
 
 <template>
-  <NewCharacter @new-character="(ch) => characters.push(ch)" />
-  <NewInitiativeCount @new-initiative-count="(ic) => characters.push(ic)" />
+  <NewCreature @new-creature="(ch) => initiatives.push(ch)" />
+  <NewInitiativeCount @new-initiative-count="(ic) => initiatives.push(ic)" />
   <div class="tracker-container">
     <template v-for="(item, idx) in ordered" :key="idx">
-      <CharacterInitiativeItem v-if="isCharacter(item)" :character="item" />
+      <CreatureInitiative v-if="isCreature(item)" :creature="item" />
       <InitiativeCountInitiativeItem v-if="isInitiativeCount(item)" :initiativeCount="item" />
     </template>
   </div>

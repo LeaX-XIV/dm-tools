@@ -1,4 +1,4 @@
-export default class Character {
+export default class Creature {
   name: string;
   initiative: number;
 

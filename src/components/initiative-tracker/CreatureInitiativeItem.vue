@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { reactive, computed } from "vue";
 import CreaturePulse from "./CreaturePulse.vue";
-import Character from "@model/Character.ts";
+import Creature from "@/model/Creature";
 
-const { character } = defineProps<{ character: Character }>();
+const { creature } = defineProps<{ creature: Creature }>();
 
-const hasCurrent = computed(() => character.hitPointsCurrent !== null);
-const hasMax = computed(() => character.hitPointsMax !== null);
+const hasCurrent = computed(() => creature.hitPointsCurrent !== null);
+const hasMax = computed(() => creature.hitPointsMax !== null);
 const hasAll = computed(() => hasCurrent.value && hasMax.value);
 
-const isDead = computed(() => character.isDead);
+const isDead = computed(() => creature.isDead);
 
 const classObject = reactive({
   dead: isDead,
@@ -18,21 +18,21 @@ const classObject = reactive({
 
 <template>
   <div class="container" :class="classObject">
-    <span class="name">{{ character.name }}</span>
-    <span class="initiativeCount">{{ character.initiative }}</span>
-    <span v-if="character.armorClass" class="armorClass">{{ character.armorClass }}</span>
+    <span class="name">{{ creature.name }}</span>
+    <span class="initiativeCount">{{ creature.initiative }}</span>
+    <span v-if="creature.armorClass" class="armorClass">{{ creature.armorClass }}</span>
 
     <div class="health" :class="classObject">
       <div style="text-align: center">
-        <span v-if="hasCurrent" class="hitPointsCurrent">{{ character.hitPointsCurrent }}</span>
+        <span v-if="hasCurrent" class="hitPointsCurrent">{{ creature.hitPointsCurrent }}</span>
         <span v-if="hasAll">/</span>
-        <span v-if="hasMax" class="hitPointsMax">{{ character.hitPointsMax }}</span>
+        <span v-if="hasMax" class="hitPointsMax">{{ creature.hitPointsMax }}</span>
       </div>
       <CreaturePulse
         v-if="hasAll"
         class="health"
-        :current="character.hitPointsCurrent!"
-        :max="character.hitPointsMax!"
+        :current="creature.hitPointsCurrent!"
+        :max="creature.hitPointsMax!"
       />
     </div>
   </div>

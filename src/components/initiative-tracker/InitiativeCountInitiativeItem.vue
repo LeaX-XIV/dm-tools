@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // import { reactive, computed } from "vue";
-import InitiativeCount from "@model/InitiativeCount.ts";
+import InitiativeCount from "@model/InitiativeCount";
 
 const { initiativeCount } = defineProps<{ initiativeCount: InitiativeCount }>();
 </script>
