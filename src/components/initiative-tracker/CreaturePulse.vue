@@ -71,7 +71,7 @@ $svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" width="#{$w
     margin: auto;
     height: $strokeWidth;
   }
-  .bloodied & {
+  &.bloodied {
     --animation-duration-factor: 1 / 2.85;
     $strokeColor: red;
     $svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" width="#{$w}" height="#{$h}"><polyline fill="none" stroke-width="#{$strokeWidth}" stroke="#{$strokeColor}" points="2.4,58.7 70.8,58.7 76.1,46.2 81.1,58.7 89.9,58.7 93.8,66.5 102.8,22.7 110.6,78.7 115.3,58.7 126.4,58.7 134.4,54.7 142.4,58.7 197.8,58.7 "/></svg>';
@@ -79,7 +79,7 @@ $svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" width="#{$w
       background: url("data:image/svg+xml;utf8,#{$svg}") 0 0 no-repeat;
     }
   }
-  .dead & {
+  &.dead {
     --animation-duration-factor: 1.5;
     $svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" width="#{$w}" height="#{$h}"><polyline fill="none" stroke-width="#{$strokeWidth}" stroke="#{$strokeColor}" points="2.4,58.7 197.8,58.7 "/></svg>';
     &:after {
