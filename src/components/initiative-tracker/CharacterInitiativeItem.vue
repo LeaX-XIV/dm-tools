@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive, computed } from "vue";
-import CharacterHealth from "./CharacterHealth.vue";
+import CreaturePulse from "./CreaturePulse.vue";
 import Character from "@model/Character.ts";
 
 const { character } = defineProps<{ character: Character }>();
@@ -28,7 +28,7 @@ const classObject = reactive({
         <span v-if="hasAll">/</span>
         <span v-if="hasMax" class="hitPointsMax">{{ character.hitPointsMax }}</span>
       </div>
-      <CharacterHealth
+      <CreaturePulse
         v-if="hasAll"
         class="health"
         :current="character.hitPointsCurrent!"
