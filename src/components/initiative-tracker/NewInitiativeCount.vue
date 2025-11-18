@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import InitiativeCount from "@/model/InitiativeCount";
+import InitiativeCount from "@model/InitiativeCount";
 const emit = defineEmits<{
   (e: "new-initiative-count", initiativeCount: InitiativeCount): void;
 }>();

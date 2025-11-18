@@ -31,6 +31,7 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
       "@components": fileURLToPath(new URL("./src/components", import.meta.url)),
       "@model": fileURLToPath(new URL("./src/model", import.meta.url)),
+      "@state": fileURLToPath(new URL("./src/state", import.meta.url)),
     },
   },
 });

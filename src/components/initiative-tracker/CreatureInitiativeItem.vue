@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, computed } from "vue";
 import CreaturePulse from "./CreaturePulse.vue";
-import Creature from "@/model/Creature";
+import Creature from "@model/Creature";
 
 defineEmits<{
   (e: "update-hit-points-current", creature: Creature, newHitPoints: number): void;

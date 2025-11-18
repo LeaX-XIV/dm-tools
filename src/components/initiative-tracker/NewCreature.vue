@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import Creature from "@/model/Creature";
+import Creature from "@model/Creature";
 const emit = defineEmits<{
   (e: "new-creature", creature: Creature): void;
 }>();
