@@ -64,11 +64,11 @@ const classObject = reactive({
 
   position: relative;
   min-height: 2em;
-  width: 100vw;
+  width: 100%;
   box-sizing: border-box;
 
   @media (min-width: 600px) {
-    width: 75vw;
+    width: 75%;
   }
 
   & .name {

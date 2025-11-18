@@ -2,13 +2,11 @@
 import CreatureInitiative from "./CreatureInitiativeItem.vue";
 import InitiativeCountInitiativeItem from "./InitiativeCountInitiativeItem.vue";
 import Creature from "@model/Creature";
-import NewCreature from "./NewCreature.vue";
 import InitiativeCount from "@model/InitiativeCount";
-import NewInitiativeCount from "./NewInitiativeCount.vue";
 
 import { useInitiativeTracker, type WithInitiative } from "@state/InitiativeTrackerState.ts";
 
-const { initiativesOrdered, addInitiative } = useInitiativeTracker();
+const { initiativesOrdered } = useInitiativeTracker();
 
 function isCreature(item: WithInitiative): item is Creature {
   return item instanceof Creature;
@@ -20,8 +18,6 @@ function isInitiativeCount(item: WithInitiative): item is InitiativeCount {
 </script>
 
 <template>
-  <NewCreature @new-creature="addInitiative" />
-  <NewInitiativeCount @new-initiative-count="addInitiative" />
   <div class="tracker-container">
     <template v-for="(item, idx) in initiativesOrdered" :key="idx">
       <CreatureInitiative

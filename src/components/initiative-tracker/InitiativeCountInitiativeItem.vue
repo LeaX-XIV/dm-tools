@@ -26,7 +26,7 @@ const { initiativeCount } = defineProps<{ initiativeCount: InitiativeCount }>();
   color: red;
 
   & .line {
-    width: 75vw;
+    width: 75%;
     height: 2px;
     background-color: currentColor;
   }

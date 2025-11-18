@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import InitiativeTracker from "@/components/initiative-tracker/InitiativeTracker.vue";
+import InitiativeTrackerLeft from "@/components/initiative-tracker/InitiativeTrackerLeft.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,7 +19,7 @@ const router = createRouter({
       path: "/initiative",
       name: "initiative",
       components: {
-        // left: undefined,
+        left: InitiativeTrackerLeft,
         default: InitiativeTracker,
         // right: undefined,
       },
