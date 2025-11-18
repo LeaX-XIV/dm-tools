@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import InitiativeCount from "@model/InitiativeCount";
+import { mdiAvTimer } from "@mdi/js";
 const emit = defineEmits<{
   (e: "new-initiative-count", initiativeCount: InitiativeCount): void;
 }>();
@@ -22,7 +23,7 @@ function save() {
 </script>
 
 <template>
-  <button @click.stop.prevent="open = true">+ Iniziativa</button>
+  <v-btn :prepend-icon="mdiAvTimer" block @click.stop.prevent="open = true">Iniziativa</v-btn>
 
   <Teleport to="body">
     <div v-if="open" class="modal">

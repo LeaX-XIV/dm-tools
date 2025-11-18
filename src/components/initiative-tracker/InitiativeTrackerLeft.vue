@@ -7,8 +7,8 @@ const { addInitiative } = useInitiativeTracker();
 </script>
 
 <template>
-  <div>
+  <v-btn-group direction="vertical" style="width: 100%">
     <NewCreature @new-creature="addInitiative" />
     <NewInitiativeCount @new-initiative-count="addInitiative" />
-  </div>
+  </v-btn-group>
 </template>

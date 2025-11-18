@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import Creature from "@model/Creature";
+import { mdiSwordCross } from "@mdi/js";
 const emit = defineEmits<{
   (e: "new-creature", creature: Creature): void;
 }>();
@@ -46,7 +47,7 @@ function save() {
 </script>
 
 <template>
-  <button @click.stop.prevent="open = true">+ Creatura</button>
+  <v-btn :prepend-icon="mdiSwordCross" block @click.stop.prevent="open = true">Creatura</v-btn>
 
   <Teleport to="body">
     <div v-if="open" class="modal">
