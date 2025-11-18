@@ -18,8 +18,8 @@ function isInitiativeCount(item: WithInitiative): item is InitiativeCount {
 </script>
 
 <template>
-  <div class="tracker-container">
-    <template v-for="(item, idx) in initiativesOrdered" :key="idx">
+  <v-row v-for="(item, idx) in initiativesOrdered" :key="idx">
+    <v-col>
       <CreatureInitiative
         v-if="isCreature(item)"
         :creature="item"
@@ -28,15 +28,8 @@ function isInitiativeCount(item: WithInitiative): item is InitiativeCount {
         "
       />
       <InitiativeCountInitiativeItem v-if="isInitiativeCount(item)" :initiativeCount="item" />
-    </template>
-  </div>
+    </v-col>
+  </v-row>
 </template>
 
-<style type="sass" scoped>
-.tracker-container {
-  display: flex;
-  flex-direction: column;
-
-  row-gap: 1.5em;
-}
-</style>
+<style scoped></style>
