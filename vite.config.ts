@@ -8,6 +8,9 @@ import viteFonts from "unplugin-fonts/vite";
 // https://vite.dev/config/
 export default defineConfig({
   base: "/dm-tools/",
+  server: {
+    host: true,
+  },
   plugins: [
     vue(),
     vueDevTools(),

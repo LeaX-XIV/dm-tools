@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import InitiativeTracker from "@components/initiative-tracker/InitiativeTracker.vue";
+import PageLayout from "@components/PageLayout.vue";
 </script>
 
 <template>
-  <InitiativeTracker />
+  <PageLayout />
 </template>
 
 <style scoped></style>
