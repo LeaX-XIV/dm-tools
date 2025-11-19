@@ -11,6 +11,10 @@ function addInitiative(initiative: WithInitiative) {
   initiatives.value.push(initiative);
 }
 
+function clearAll() {
+  initiatives.value.splice(0, initiatives.value.length);
+}
+
 export interface WithInitiative {
   initiative: number;
 }
@@ -20,5 +24,6 @@ export function useInitiativeTracker() {
     initiatives,
     initiativesOrdered,
     addInitiative,
+    clearAll,
   };
 }
