@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import Creature from "@model/Creature";
-import { mdiSwordCross, mdiSkull, mdiSword } from "@mdi/js";
 
 import type { ValidationRule } from "vuetify";
 import type { VForm } from "vuetify/components";
@@ -98,7 +97,7 @@ function save() {
 </script>
 
 <template>
-  <v-btn :prepend-icon="mdiSwordCross" block @click.stop.prevent="open = true">Creatura</v-btn>
+  <v-btn prepend-icon="$creature" block @click.stop.prevent="open = true">Creatura</v-btn>
 
   <v-dialog v-model="open" max-width="600" persistent>
     <v-card title="Creatura">
@@ -108,8 +107,8 @@ function save() {
             <v-col cols="6" md="8">
               <v-switch
                 v-model="isHero"
-                :false-icon="mdiSkull"
-                :true-icon="mdiSword"
+                false-icon="$monster"
+                true-icon="$hero"
                 @change.stop.prevent="number = 1"
               >
                 <template v-if="isHero" v-slot:label>Eroe</template>

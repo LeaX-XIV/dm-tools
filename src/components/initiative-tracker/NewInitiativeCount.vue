@@ -4,7 +4,6 @@ import type { VForm } from "vuetify/components";
 
 import { ref, shallowRef, watch } from "vue";
 import InitiativeCount from "@model/InitiativeCount";
-import { mdiAvTimer } from "@mdi/js";
 
 const emit = defineEmits<{
   (e: "new-initiative-count", initiativeCount: InitiativeCount): void;
@@ -40,7 +39,7 @@ function save() {
 </script>
 
 <template>
-  <v-btn :prepend-icon="mdiAvTimer" block @click.stop.prevent="open = true">Iniziativa</v-btn>
+  <v-btn prepend-icon="$initiativeCount" block @click.stop.prevent="open = true">Iniziativa</v-btn>
 
   <v-dialog v-model="open" max-width="600" persistent>
     <v-card title="Iniziativa">

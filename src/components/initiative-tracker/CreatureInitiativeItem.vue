@@ -2,8 +2,6 @@
 import { computed } from "vue";
 import Creature from "@model/Creature";
 
-import { mdiSkull, mdiShield } from "@mdi/js";
-
 const emit = defineEmits<{
   (e: "update-hit-points-current", newHitPoints: number | null): void;
 }>();
@@ -28,11 +26,15 @@ const isDead = computed(() => creature.isDead);
     <v-list-item-title>{{ creature.name }}</v-list-item-title>
 
     <template v-slot:prepend>
-      <v-icon v-if="isDead">{{ mdiSkull }}</v-icon>
+      <v-icon v-if="isDead" icon="$dead" />
 
       <v-badge v-else-if="hasArmorClass" color="error" :content="creature.armorClass!">
-        <v-icon>{{ mdiShield }}</v-icon>
+        <v-icon icon="$initiative" />
       </v-badge>
+
+      <!-- <v-icon v-else-if icon="$monster" /> -->
+
+      <v-icon v-else icon="$hero" />
     </template>
 
     <template v-slot:append>
