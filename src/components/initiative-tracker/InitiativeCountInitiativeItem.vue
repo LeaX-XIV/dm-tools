@@ -1,39 +1,25 @@
 <script setup lang="ts">
-// import { reactive, computed } from "vue";
 import InitiativeCount from "@model/InitiativeCount";
 
 const { initiativeCount } = defineProps<{ initiativeCount: InitiativeCount }>();
 </script>
 
 <template>
-  <div class="initiativeCount">
-    <div class="line"></div>
-    <div class="text">
-      <span>{{ initiativeCount.initiative }}</span>
-      <span v-if="initiativeCount.name">&nbsp;- {{ initiativeCount.name }}</span>
-    </div>
-  </div>
+  <v-list-item density="compact" color="error">
+    <v-sheet class="d-flex align-center gc-1">
+      <hr class="flex-grow-1" />
+      <v-list-item-title class="title">{{ initiativeCount.name }}</v-list-item-title>
+      <hr class="flex-grow-1" />
+    </v-sheet>
+  </v-list-item>
 </template>
 
 <style lang="scss" scoped>
-.initiativeCount {
-  display: flex;
-  align-items: center;
+$color-error: rgb(var(--v-theme-error));
 
-  margin-top: -0.75em;
-  margin-bottom: -0.75em;
-
-  color: red;
-
-  & .line {
-    width: 75%;
-    height: 2px;
-    background-color: currentColor;
-  }
-
-  & .text {
-    margin-left: 1em;
-    text-wrap: nowrap;
-  }
+hr,
+.title {
+  color: $color-error;
+  border-color: $color-error;
 }
 </style>
