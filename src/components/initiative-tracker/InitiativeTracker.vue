@@ -1,18 +1,12 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
 import CreatureInitiative from "./CreatureInitiativeItem.vue";
 import InitiativeCountInitiativeItem from "./InitiativeCountInitiativeItem.vue";
-import Creature from "@/model/Creature";
-import NewCreature from "./NewCreature.vue";
+import Creature from "@model/Creature";
 import InitiativeCount from "@model/InitiativeCount";
-import NewInitiativeCount from "./NewInitiativeCount.vue";
 
-interface WithInitiative {
-  initiative: number;
-}
+import { useInitiativeTracker, type WithInitiative } from "@state/InitiativeTrackerState.ts";
 
-const initiatives = ref<WithInitiative[]>([]);
-const ordered = computed(() => initiatives.value.toSorted((a, b) => b.initiative - a.initiative));
+const { initiativesOrdered } = useInitiativeTracker();
 
 function isCreature(item: WithInitiative): item is Creature {
   return item instanceof Creature;
@@ -21,30 +15,24 @@ function isCreature(item: WithInitiative): item is Creature {
 function isInitiativeCount(item: WithInitiative): item is InitiativeCount {
   return item instanceof InitiativeCount;
 }
+
+function updateHitPointsCurrent(creature: Creature, newHitPoints: number | null) {
+  creature.hitPointsCurrent = newHitPoints;
+}
 </script>
 
 <template>
-  <NewCreature @new-creature="(ch) => initiatives.push(ch)" />
-  <NewInitiativeCount @new-initiative-count="(ic) => initiatives.push(ic)" />
-  <div class="tracker-container">
-    <template v-for="(item, idx) in ordered" :key="idx">
+  <v-list>
+    <template v-slot:divider><v-divider /></template>
+    <template v-for="(item, idx) in initiativesOrdered" :key="idx">
       <CreatureInitiative
         v-if="isCreature(item)"
         :creature="item"
-        @update-hit-points-current="
-          (creature, newHitPoints) => (creature.hitPointsCurrent = newHitPoints)
-        "
+        @update-hit-points-current="(newHitPoints) => updateHitPointsCurrent(item, newHitPoints)"
       />
-      <InitiativeCountInitiativeItem v-if="isInitiativeCount(item)" :initiativeCount="item" />
+      <InitiativeCountInitiativeItem v-else-if="isInitiativeCount(item)" :initiativeCount="item" />
     </template>
-  </div>
+  </v-list>
 </template>
 
-<style type="sass" scoped>
-.tracker-container {
-  display: flex;
-  flex-direction: column;
-
-  row-gap: 1.5em;
-}
-</style>
+<style scoped></style>

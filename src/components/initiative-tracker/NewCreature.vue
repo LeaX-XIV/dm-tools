@@ -1,38 +1,90 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import Creature from "@/model/Creature";
+import Creature from "@model/Creature";
+import { mdiSwordCross, mdiSkull, mdiSword } from "@mdi/js";
+
+import type { ValidationRule } from "vuetify";
+import type { VForm } from "vuetify/components";
+
 const emit = defineEmits<{
   (e: "new-creature", creature: Creature): void;
 }>();
 
 const open = ref(false);
+const form = ref<VForm>();
 
-const isEnemy = ref(false);
-const number = ref("1");
+const isHero = ref(true);
+
+const number = ref(1);
+const numberRules = ref<ValidationRule[]>([
+  (v: number) => v !== null || "Number is required",
+  (v: number) =>
+    (v && typeof v === "number" && v > 0 && Number.isInteger(v)) ||
+    "Number must be a positive integer",
+]);
 
 const name = ref("");
-const initiative = ref("");
-const armorClass = ref("");
-const hitPointsMax = ref("");
-const hitPointsCurrent = ref("");
+const nameRules = ref<ValidationRule[]>([
+  (v: string) => (v !== null && v.length > 0) || "Name is required",
+]);
+
+const initiative = ref<number>();
+const initiativeRules = ref<ValidationRule[]>([
+  (v: number) => v !== null || "Initiative is required",
+  (v: number) =>
+    (v && typeof v === "number" && Number.isInteger(v)) || "Initiative must be an integer",
+]);
+
+const armorClass = ref<number>();
+const armorClassRules = ref<ValidationRule[]>([
+  (v: number) =>
+    !v || (typeof v === "number" && Number.isInteger(v)) || "Armor class must be an integer",
+]);
+
+const hitPointsMax = ref<number>();
+const hitPointsMaxRules = ref<ValidationRule[]>([
+  (v: number) =>
+    !v ||
+    (typeof v === "number" && v > 0 && Number.isInteger(v)) ||
+    "Hit points max must be a positive integer",
+]);
+
+const hitPointsCurrent = ref<number>();
+const hitPointsCurrentRules = ref<ValidationRule[]>([
+  (v: number) =>
+    !v ||
+    (typeof v === "number" && v > 0 && Number.isInteger(v)) ||
+    "Hit points current must be a positive integer",
+  (v: number) =>
+    !hitPointsMax.value ||
+    !v ||
+    v <= hitPointsMax.value ||
+    `Cannot be more than ${hitPointsMax.value}`,
+]);
 
 watch(open, () => {
-  isEnemy.value = false;
-  number.value = "1";
+  if (!form.value)
+    // Protection during component mounting
+    return;
+
+  isHero.value = true;
+  number.value = 1;
   name.value = "";
-  initiative.value = "";
-  armorClass.value = "";
-  hitPointsMax.value = "";
-  hitPointsCurrent.value = "";
+  initiative.value = undefined;
+  armorClass.value = undefined;
+  hitPointsMax.value = undefined;
+  hitPointsCurrent.value = undefined;
 });
 
 function save() {
-  const count = Number(number.value);
+  if (!form.value.isValid) return;
+
+  const count = number.value;
   for (let i = 0; i < count; ++i) {
     emit(
       "new-creature",
       new Creature(
-        isEnemy.value ? `${name.value} ${i + 1}` : name.value,
+        isHero.value ? name.value : `${name.value} ${i + 1}`,
         Number(initiative.value),
         armorClass.value ? Number(armorClass.value) : undefined,
         hitPointsMax.value ? Number(hitPointsMax.value) : undefined,
@@ -46,61 +98,88 @@ function save() {
 </script>
 
 <template>
-  <button @click.stop.prevent="open = true">+ Creatura</button>
+  <v-btn :prepend-icon="mdiSwordCross" block @click.stop.prevent="open = true">Creatura</v-btn>
 
-  <Teleport to="body">
-    <div v-if="open" class="modal">
-      <p>Hello from the modal!</p>
+  <v-dialog v-model="open" max-width="600" persistent>
+    <v-card title="Creatura">
+      <v-form validate-on="invalid-input" @submit.prevent="save" ref="form">
+        <v-card-text>
+          <v-row>
+            <v-col cols="6" md="8">
+              <v-switch
+                v-model="isHero"
+                :false-icon="mdiSkull"
+                :true-icon="mdiSword"
+                @change.stop.prevent="number = 1"
+              >
+                <template v-if="isHero" v-slot:label>Eroe</template>
+                <template v-else v-slot:label>Mostro</template>
+              </v-switch>
+            </v-col>
+            <v-col cols="6" md="4">
+              <v-number-input
+                v-if="!isHero"
+                label="Numero"
+                control-variant="stacked"
+                :rules="numberRules"
+                :min="1"
+                v-model="number"
+                required
+              />
+            </v-col>
+            <v-col cols="12" :md="isHero ? 4 : 8">
+              <v-text-field v-model="name" label="Nome" :rules="nameRules" required />
+            </v-col>
+            <v-col cols="6" md="4">
+              <v-number-input
+                label="Iniziativa"
+                control-variant="stacked"
+                :rules="initiativeRules"
+                v-model="initiative"
+                required
+              />
+            </v-col>
+            <v-col cols="6" md="4">
+              <v-number-input
+                label="CA"
+                control-variant="stacked"
+                :rules="armorClassRules"
+                v-model="armorClass"
+              />
+            </v-col>
+            <v-col v-if="!isHero" cols="6" md="4">
+              <v-number-input
+                label="HP attuali"
+                control-variant="stacked"
+                :rules="hitPointsCurrentRules"
+                :min="0"
+                :max="hitPointsMax ? hitPointsMax : undefined"
+                v-model="hitPointsCurrent"
+              />
+            </v-col>
+            <v-col v-if="!isHero" cols="6" md="4">
+              <v-number-input
+                label="HP massimi"
+                control-variant="stacked"
+                :rules="hitPointsMaxRules"
+                :min="0"
+                v-model="hitPointsMax"
+              />
+            </v-col>
+          </v-row>
+        </v-card-text>
 
-      <form @submit.stop.prevent="save">
-        <label>
-          <input v-model="isEnemy" type="checkbox" />
-          <span>Nemico</span>
-        </label>
-        <input v-if="isEnemy" v-model.lazy="number" type="number" min="1" />
-        <div>
-          <input v-model.lazy="name" required placeholder="Nome" />
-          <input v-model.lazy="initiative" type="number" required placeholder="Iniziativa" />
-          <input
-            v-model.lazy="armorClass"
-            type="number"
-            placeholder="Classe Armatura"
-            :required="isEnemy"
-          />
-          <input
-            v-if="isEnemy"
-            v-model.lazy="hitPointsMax"
-            type="number"
-            placeholder="Punti ferita Massimi"
-            :required="isEnemy"
-          />
-          <input
-            v-if="isEnemy"
-            v-model.lazy="hitPointsCurrent"
-            type="number"
-            placeholder="Punti ferita attuali"
-            :required="isEnemy"
-          />
-        </div>
+        <v-divider></v-divider>
 
-        <button type="reset" @click="open = false">Annulla</button>
-        <button type="submit">Salva</button>
-      </form>
-    </div>
-  </Teleport>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn type="reset" text="Annulla" variant="plain" @click="open = false"></v-btn>
+          <v-btn type="submit" color="primary" text="Salva" variant="tonal"></v-btn>
+        </v-card-actions>
+      </v-form>
+    </v-card>
+  </v-dialog>
 </template>
 
-<style scoped>
-.modal {
-  position: fixed;
-  z-index: 999;
-  top: 20%;
-  left: 50%;
-  width: 300px;
-  margin-left: -150px;
-
-  padding: 0.5em;
-  border: 1px solid black;
-  background-color: white;
-}
-</style>
+<style scoped></style>
