@@ -7,7 +7,7 @@ export default class InitiativeCount {
     this.name = name ?? null;
   }
 
-  jsonReplacer() {
-    return { ...this, __type: this.constructor.name };
+  toJSON() {
+    return { ...this, __type: "InitiativeCount" };
   }
 }

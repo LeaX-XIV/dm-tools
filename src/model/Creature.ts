@@ -25,7 +25,7 @@ export default class Creature {
     return this.hitPointsCurrent !== null && this.hitPointsCurrent <= 0;
   }
 
-  jsonReplacer() {
-    return { ...this, __type: this.constructor.name };
+  toJSON() {
+    return { ...this, __type: "Creature" };
   }
 }

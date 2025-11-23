@@ -34,18 +34,10 @@ function readFromStorage() {
 
 function writeToStorage() {
   try {
-    STORAGE.setItem(STORAGE_KEY, JSON.stringify(initiatives.value, jsonReplacer));
+    STORAGE.setItem(STORAGE_KEY, JSON.stringify(initiatives.value));
   } catch {
     STORAGE.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_VALUE));
   }
-}
-
-function jsonReplacer(key: string, value: unknown) {
-  return value !== null &&
-    typeof value !== "undefined" &&
-    typeof value["jsonReplacer"] === "function"
-    ? value.jsonReplacer()
-    : value;
 }
 
 const initiatives = ref<WithInitiative[]>(readFromStorage());
