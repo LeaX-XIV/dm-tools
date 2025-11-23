@@ -1,9 +1,38 @@
-import { ref, computed } from "vue";
+import { ref, computed, type WatchHandle, watchEffect } from "vue";
+import { fromJSON } from "@decorators/JsonSerializable";
 
-const initiatives = ref<WithInitiative[]>([]);
-const initiativesOrdered = computed(() =>
-  initiatives.value.toSorted((a, b) => b.initiative - a.initiative),
-);
+const STORAGE_KEY = "INITIATIVE_TRACKER";
+const STORAGE: Storage = localStorage;
+const DEFAULT_VALUE: WithInitiative[] = [];
+
+let WATCHER: WatchHandle;
+
+function readFromStorage() {
+  const inStorage = STORAGE.getItem(STORAGE_KEY);
+  if (inStorage === null) return DEFAULT_VALUE;
+
+  try {
+    return JSON.parse(inStorage, fromJSON) as WithInitiative[];
+  } catch {
+    return DEFAULT_VALUE;
+  }
+}
+
+function writeToStorage() {
+  try {
+    STORAGE.setItem(STORAGE_KEY, JSON.stringify(initiatives.value));
+  } catch {
+    STORAGE.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_VALUE));
+  }
+}
+
+const initiatives = ref<WithInitiative[]>(readFromStorage());
+
+const initiativesOrdered = computed(() => initiatives.value.toSorted(orderByInitiative));
+
+function orderByInitiative(a: WithInitiative, b: WithInitiative): number {
+  return b.initiative - a.initiative;
+}
 
 function addInitiative(initiative: WithInitiative) {
   if (!initiative) return;
@@ -20,6 +49,8 @@ export interface WithInitiative {
 }
 
 export function useInitiativeTracker() {
+  if (typeof WATCHER === "undefined") WATCHER = watchEffect(writeToStorage);
+
   return {
     initiatives,
     initiativesOrdered,

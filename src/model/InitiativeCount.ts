@@ -1,3 +1,6 @@
+import JsonSerializable from "@decorators/JsonSerializable";
+
+@JsonSerializable
 export default class InitiativeCount {
   initiative: number;
   name: string | null;

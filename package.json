@@ -48,6 +48,9 @@
       "@components/*": [
         "components/*"
       ],
+      "@decorators/*": [
+        "decorators/*"
+      ],
       "@model/*": [
         "model/*"
       ],
