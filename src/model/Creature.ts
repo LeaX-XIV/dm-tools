@@ -1,3 +1,6 @@
+import JsonSerializable from "@decorators/JsonSerializable";
+
+@JsonSerializable
 export default class Creature {
   name: string;
   initiative: number;
@@ -23,9 +26,5 @@ export default class Creature {
 
   get isDead(): boolean {
     return this.hitPointsCurrent !== null && this.hitPointsCurrent <= 0;
-  }
-
-  toJSON() {
-    return { ...this, __type: "Creature" };
   }
 }

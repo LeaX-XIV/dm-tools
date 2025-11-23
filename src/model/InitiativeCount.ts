@@ -1,3 +1,6 @@
+import JsonSerializable from "@decorators/JsonSerializable";
+
+@JsonSerializable
 export default class InitiativeCount {
   initiative: number;
   name: string | null;
@@ -5,9 +8,5 @@ export default class InitiativeCount {
   constructor(initiative: number, name?: string) {
     this.initiative = initiative;
     this.name = name ?? null;
-  }
-
-  toJSON() {
-    return { ...this, __type: "InitiativeCount" };
   }
 }

@@ -1,11 +1,5 @@
 import { ref, computed, type WatchHandle, watchEffect } from "vue";
-import Creature from "@model/Creature";
-import InitiativeCount from "@model/InitiativeCount";
-
-const Types = {
-  Creature: Creature,
-  InitiativeCount: InitiativeCount,
-};
+import { fromJSON } from "@decorators/JsonSerializable";
 
 const STORAGE_KEY = "INITIATIVE_TRACKER";
 const STORAGE: Storage = localStorage;
@@ -18,15 +12,7 @@ function readFromStorage() {
   if (inStorage === null) return DEFAULT_VALUE;
 
   try {
-    return JSON.parse(inStorage, function (k, v) {
-      const type = v !== null && v.hasOwnProperty("__type") ? Types[v.__type] : null;
-
-      if (type === Creature)
-        return new Creature(v.name, v.initiative, v.armorClass, v.hitPointsMax, v.hitPointsCurrent);
-      if (type === InitiativeCount) return new InitiativeCount(v.initiative, v.name);
-
-      return v;
-    }) as WithInitiative[];
+    return JSON.parse(inStorage, fromJSON) as WithInitiative[];
   } catch {
     return DEFAULT_VALUE;
   }
