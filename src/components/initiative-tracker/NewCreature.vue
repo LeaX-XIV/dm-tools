@@ -76,7 +76,7 @@ watch(open, () => {
 });
 
 function save() {
-  if (!form.value.isValid) return;
+  if (!form.value!.isValid) return;
 
   const count = number.value;
   for (let i = 0; i < count; ++i) {

@@ -31,7 +31,7 @@ watch(open, () => {
 });
 
 function save() {
-  if (!form.value.isValid) return;
+  if (!form.value!.isValid) return;
 
   emit("new-initiative-count", new InitiativeCount(initiative.value, name.value));
   open.value = false;
