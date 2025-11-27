@@ -3,16 +3,21 @@ import { fromJSON } from "@decorators/JsonSerializable";
 
 const STORAGE_KEY: string = "INITIATIVE_TRACKER";
 const STORAGE: Storage = localStorage;
-const DEFAULT_VALUE: WithInitiative[] = [];
+const DEFAULT_VALUE: InitiativeTrackerState = { initiatives: [], current: undefined };
 
 let WATCHER: WatchHandle;
 
-function readFromStorage(): WithInitiative[] {
+type InitiativeTrackerState = {
+  initiatives: WithInitiative[];
+  current: number | undefined;
+};
+
+function readFromStorage(): InitiativeTrackerState {
   const inStorage: string | null = STORAGE.getItem(STORAGE_KEY);
   if (inStorage === null) return DEFAULT_VALUE;
 
   try {
-    return JSON.parse(inStorage, fromJSON) as WithInitiative[];
+    return JSON.parse(inStorage, fromJSON) as InitiativeTrackerState;
   } catch {
     return DEFAULT_VALUE;
   }
@@ -20,13 +25,20 @@ function readFromStorage(): WithInitiative[] {
 
 function writeToStorage(): void {
   try {
-    STORAGE.setItem(STORAGE_KEY, JSON.stringify(initiatives.value));
+    const currentState: InitiativeTrackerState = {
+      initiatives: initiatives.value,
+      current: currentInitiative.value,
+    };
+
+    STORAGE.setItem(STORAGE_KEY, JSON.stringify(currentState));
   } catch {
     STORAGE.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_VALUE));
   }
 }
 
-const initiatives = ref<WithInitiative[]>(readFromStorage());
+const savedState = readFromStorage();
+
+const initiatives = ref<WithInitiative[]>(savedState.initiatives);
 const initiativesOrdered = computed(() => initiatives.value.toSorted(orderByInitiative));
 
 function orderByInitiative(a: WithInitiative, b: WithInitiative): number {
@@ -43,7 +55,7 @@ function clearAll(): void {
   initiatives.value.splice(0, initiatives.value.length);
 }
 
-const currentInitiative = ref<number | undefined>(undefined);
+const currentInitiative = ref<number | undefined>(savedState.current);
 
 function canAdvanceInitiative(): boolean {
   return initiatives.value.length > 1;
