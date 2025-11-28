@@ -52,6 +52,7 @@ const mainClassObject = computed(() => ({
           </v-col>
         </v-row>
       </v-container>
+      <router-view name="fab" />
     </v-main>
   </v-app>
 </template>
