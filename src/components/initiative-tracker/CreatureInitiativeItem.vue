@@ -22,7 +22,7 @@ const isDead = computed<boolean>(() => creature.isDead);
 </script>
 
 <template>
-  <v-list-item class="mx-auto pa-6" :elevation="isDead ? 0 : 3">
+  <v-list-item class="mx-auto px-6 py-3" :elevation="isDead ? 0 : 3">
     <v-list-item-title>{{ creature.name }}</v-list-item-title>
 
     <template v-slot:prepend>
