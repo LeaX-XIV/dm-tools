@@ -1,25 +1,32 @@
 <script setup lang="ts">
 import InitiativeCount from "@model/InitiativeCount";
 
-const { initiativeCount } = defineProps<{ initiativeCount: InitiativeCount }>();
+const { initiativeCount, active } = defineProps<{
+  initiativeCount: InitiativeCount;
+  active: boolean;
+}>();
 </script>
 
 <template>
-  <v-list-item density="compact" color="error">
-    <v-sheet class="d-flex align-center gc-1">
-      <hr class="flex-grow-1" />
-      <v-list-item-title class="title">{{ initiativeCount.name }}</v-list-item-title>
-      <hr class="flex-grow-1" />
-    </v-sheet>
+  <v-list-item class="mx-auto px-6" density="compact">
+    <div class="d-flex align-center gc-1">
+      <hr
+        class="flex-grow-1"
+        :class="`elevation-${active ? 3 : 0}`"
+        :color="active ? 'primary' : 'error'"
+      />
+
+      <v-list-subheader :color="active ? 'primary' : 'error'">{{
+        initiativeCount.name
+      }}</v-list-subheader>
+
+      <hr
+        class="flex-grow-1"
+        :class="`elevation-${active ? 3 : 0}`"
+        :color="active ? 'primary' : 'error'"
+      />
+    </div>
   </v-list-item>
 </template>
 
-<style lang="scss" scoped>
-$color-error: rgb(var(--v-theme-error));
-
-hr,
-.title {
-  color: $color-error;
-  border-color: $color-error;
-}
-</style>
+<style lang="scss" scoped></style>
