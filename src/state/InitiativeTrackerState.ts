@@ -53,6 +53,7 @@ function addInitiative(initiative: WithInitiative): void {
 
 function clearAll(): void {
   initiatives.value.splice(0, initiatives.value.length);
+  currentInitiative.value = undefined;
 }
 
 const currentInitiative = ref<number | undefined>(savedState.current);
