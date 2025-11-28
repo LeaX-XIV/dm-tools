@@ -6,7 +6,7 @@ import InitiativeCount from "@model/InitiativeCount";
 
 import { useInitiativeTracker, type WithInitiative } from "@state/InitiativeTrackerState.ts";
 
-const { initiativesOrdered } = useInitiativeTracker();
+const { initiativesOrdered, currentInitiative } = useInitiativeTracker();
 
 function isCreature(item: WithInitiative): item is Creature {
   return item instanceof Creature;
@@ -28,9 +28,14 @@ function updateHitPointsCurrent(creature: Creature, newHitPoints: number | null)
       <CreatureInitiative
         v-if="isCreature(item)"
         :creature="item"
+        :active="item.initiative === currentInitiative"
         @update-hit-points-current="(newHitPoints) => updateHitPointsCurrent(item, newHitPoints)"
       />
-      <InitiativeCountInitiativeItem v-else-if="isInitiativeCount(item)" :initiativeCount="item" />
+      <InitiativeCountInitiativeItem
+        v-else-if="isInitiativeCount(item)"
+        :initiativeCount="item"
+        :active="item.initiative === currentInitiative"
+      />
     </template>
   </v-list>
 </template>
