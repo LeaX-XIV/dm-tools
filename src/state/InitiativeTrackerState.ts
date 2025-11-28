@@ -56,13 +56,10 @@ function clearAll(): void {
 }
 
 const currentInitiative = ref<number | undefined>(savedState.current);
-
-function canAdvanceInitiative(): boolean {
-  return initiatives.value.length > 1;
-}
+const canAdvanceInitiative = computed(() => initiatives.value.length > 1);
 
 function advanceInitiative(): void {
-  if (canAdvanceInitiative()) return;
+  if (!canAdvanceInitiative.value) return;
 
   if (typeof currentInitiative.value === "undefined") {
     currentInitiative.value = initiativesOrdered.value[0]?.initiative;
