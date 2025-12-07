@@ -11,6 +11,8 @@ const { creature, active } = defineProps<{ creature: Creature; active: boolean }
 const hasArmorClass = computed(() => creature.armorClass !== null);
 const hasCurrentHp = computed(() => creature.hitPointsCurrent !== null);
 const hasMaxHp = computed(() => creature.hitPointsMax !== null);
+const isPlayer = computed(() => creature.isPlayer);
+
 const hasAllHp = computed(() => hasCurrentHp.value && hasMaxHp.value);
 
 const currentHp = computed({
@@ -36,14 +38,14 @@ const isDead = computed<boolean>(() => creature.isDead);
         <v-icon icon="$initiative" />
       </v-badge>
 
-      <!-- <v-icon v-else-if icon="$monster" /> -->
+      <v-icon v-else-if="!isPlayer" icon="$monster" />
 
       <v-icon v-else icon="$hero" />
     </template>
 
     <template v-slot:append>
       <v-number-input
-        v-if="hasCurrentHp"
+        v-if="!isPlayer && hasCurrentHp"
         label="HP"
         control-variant="split"
         variant="outlined"
