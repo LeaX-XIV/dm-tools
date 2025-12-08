@@ -38,7 +38,7 @@ function save(
 </script>
 
 <template>
-  <v-btn prepend-icon="$creature" block @click.stop.prevent="open = true">Creatura</v-btn>
+  <v-btn prepend-icon="$creature" block @click.stop.prevent="open = true" text="Creatura" />
 
   <v-dialog v-model="open" max-width="600" persistent>
     <v-card title="Creatura">

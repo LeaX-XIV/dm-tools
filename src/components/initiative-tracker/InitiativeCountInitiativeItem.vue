@@ -16,9 +16,10 @@ const { initiativeCount, active } = defineProps<{
         :color="active ? 'primary' : 'error'"
       />
 
-      <v-list-subheader :color="active ? 'primary' : 'error'">{{
-        initiativeCount.name
-      }}</v-list-subheader>
+      <v-list-subheader
+        :color="active ? 'primary' : 'error'"
+        :title="initiativeCount.name ?? undefined"
+      />
 
       <hr
         class="flex-grow-1"

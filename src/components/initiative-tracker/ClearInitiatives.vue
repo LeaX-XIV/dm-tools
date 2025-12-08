@@ -43,7 +43,7 @@ const removeTargetText = computed(() => {
         </v-card-text>
 
         <v-card-actions>
-          <v-spacer></v-spacer>
+          <v-spacer />
 
           <v-btn variant="plain" text="Chiudi" @click="isActive.value = false" />
           <v-btn

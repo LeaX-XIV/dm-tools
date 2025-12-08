@@ -115,10 +115,8 @@ function submit() {
             true-icon="$hero"
             @change.stop.prevent="number = 1"
             :disabled="isEdit"
-          >
-            <template v-if="isPlayer" v-slot:label>Eroe</template>
-            <template v-else v-slot:label>Mostro</template>
-          </v-switch>
+            :label="isPlayer ? 'Eroe' : 'Mostro'"
+          />
         </v-col>
         <v-col cols="6" md="4">
           <v-number-input
@@ -178,9 +176,9 @@ function submit() {
     <v-divider></v-divider>
 
     <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn type="reset" text="Annulla" variant="plain" @click="$emit('cancel')"></v-btn>
-      <v-btn type="submit" color="primary" text="Salva" variant="tonal"></v-btn>
+      <v-spacer />
+      <v-btn type="reset" text="Annulla" variant="plain" @click="$emit('cancel')" />
+      <v-btn type="submit" color="primary" text="Salva" variant="tonal" />
     </v-card-actions>
   </v-form>
 </template>

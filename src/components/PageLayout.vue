@@ -17,17 +17,17 @@ const mainClassObject = computed(() => ({
 <template>
   <v-app id="inspire">
     <v-app-bar class="px-3" density="compact" flat>
-      <v-spacer></v-spacer>
+      <v-spacer />
       <v-tabs align-tabs="center" :color="tabsColor">
         <v-tab
           v-for="route in $router.getRoutes()"
           :key="route.name"
           :text="route.name?.toString() ?? route.path"
           :to="route.path"
-        ></v-tab>
+        />
       </v-tabs>
-      <v-spacer></v-spacer>
-      <v-btn @click="theme.toggle()" :icon="mdiThemeLightDark"></v-btn>
+      <v-spacer />
+      <v-btn @click="theme.toggle()" :icon="mdiThemeLightDark" />
     </v-app-bar>
 
     <v-main :class="mainClassObject">
