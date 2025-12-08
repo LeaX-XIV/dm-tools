@@ -53,11 +53,11 @@ const isDead = computed<boolean>(
         <span>{{ name }}</span>
 
         <v-dialog max-width="600" persistent>
-          <template v-slot:activator="{ props: activatorProps, isActive: isDialogActive }">
+          <template v-slot:activator="{ props: activatorProps }">
             <v-icon-btn
               v-bind="activatorProps"
               :icon="mdiSquareEditOutline"
-              :style="{ visibility: isHovering || isDialogActive ? undefined : 'hidden' }"
+              :style="{ visibility: isHovering ? undefined : 'hidden' }"
               opacity="50%"
             />
           </template>
