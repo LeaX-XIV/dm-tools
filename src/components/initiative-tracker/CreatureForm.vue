@@ -12,20 +12,38 @@ const emits = defineEmits<{
     isPlayer: boolean,
     name: string,
     initiative: number,
-    armorClass: number | undefined,
-    hitPointsCurrent: number | undefined,
-    hitPointsMax: number | undefined,
+    armorClass: number | null,
+    hitPointsCurrent: number | null,
+    hitPointsMax: number | null,
     number: number,
   ): void;
   (e: "cancel"): void;
 }>();
 
-const isPlayer = defineModel<boolean>("isPlayer", { default: true });
-const name = defineModel<string>("name", { default: "" });
-const initiative = defineModel<number>("initiative", { default: undefined });
-const armorClass = defineModel<number>("armorClass", { default: undefined });
-const hitPointsCurrent = defineModel<number>("hitPointsCurrent", { default: undefined });
-const hitPointsMax = defineModel<number>("hitPointsMax", { default: undefined });
+const {
+  isPlayer: defaultIsPlayer,
+  name: defaultName,
+  initiative: defaultInitiative,
+  armorClass: defaultArmorClass,
+  hitPointsCurrent: defaultHitPointsCurrent,
+  hitPointsMax: defaultHitPointsMax,
+} = defineProps<{
+  isPlayer?: boolean;
+  name?: string;
+  initiative?: number;
+  armorClass?: number;
+  hitPointsCurrent?: number;
+  hitPointsMax?: number;
+}>();
+
+const isEdit = typeof defaultName !== "undefined" && typeof defaultInitiative !== "undefined";
+
+const isPlayer = ref(defaultIsPlayer ?? true);
+const name = ref(defaultName ?? "");
+const initiative = ref(defaultInitiative ?? null);
+const armorClass = ref(defaultArmorClass ?? null);
+const hitPointsCurrent = ref(defaultHitPointsCurrent ?? null);
+const hitPointsMax = ref(defaultHitPointsMax ?? null);
 
 const number = ref<number>(1);
 
@@ -72,7 +90,7 @@ function submit() {
     "confirm",
     isPlayer.value,
     name.value,
-    initiative!.value,
+    initiative.value!,
     armorClass.value,
     hitPointsCurrent.value,
     hitPointsMax.value,
@@ -91,6 +109,7 @@ function submit() {
             false-icon="$monster"
             true-icon="$hero"
             @change.stop.prevent="number = 1"
+            :disabled="isEdit"
           >
             <template v-if="isPlayer" v-slot:label>Eroe</template>
             <template v-else v-slot:label>Mostro</template>
@@ -105,6 +124,7 @@ function submit() {
             :min="1"
             v-model="number"
             required
+            :disabled="isEdit"
           />
         </v-col>
         <v-col cols="12" :md="isPlayer ? 4 : 8">
@@ -135,6 +155,7 @@ function submit() {
             :min="0"
             :max="hitPointsMax ? hitPointsMax : undefined"
             v-model="hitPointsCurrent"
+            :disabled="isEdit"
           />
         </v-col>
         <v-col v-if="!isPlayer" cols="6" md="4">

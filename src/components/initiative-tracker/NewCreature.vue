@@ -13,9 +13,9 @@ function save(
   isPlayer: boolean,
   name: string,
   initiative: number,
-  armorClass: number | undefined,
-  hitPointsCurrent: number | undefined,
-  hitPointsMax: number | undefined,
+  armorClass: number | null,
+  hitPointsCurrent: number | null,
+  hitPointsMax: number | null,
   number: number,
 ) {
   const count = number;
@@ -28,6 +28,7 @@ function save(
         armorClass ? Number(armorClass) : undefined,
         hitPointsMax ? Number(hitPointsMax) : undefined,
         hitPointsCurrent ? Number(hitPointsCurrent) : undefined,
+        isPlayer,
       ),
     );
   }
