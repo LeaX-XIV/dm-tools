@@ -4,12 +4,14 @@ import CreatureForm from "./CreatureForm.vue";
 
 import { VIconBtn } from "vuetify/labs/VIconBtn";
 
-import { mdiSquareEditOutline } from "@mdi/js";
+import { mdiSquareEditOutline, mdiDeleteOutline } from "@mdi/js";
 
 const { isActive, isPlayer } = defineProps<{
   isActive: boolean;
   isPlayer: boolean;
 }>();
+
+defineEmits<{ (e: "requestDeletion"): void }>();
 
 const name = defineModel<string>("name", { required: true });
 const initiative = defineModel<number>("initiaitve", { required: true });
@@ -46,16 +48,16 @@ const isDead = computed<boolean>(
 
 <template>
   <v-list-item class="mx-auto px-6 py-3" :elevation="isDead ? 0 : 3">
-    <v-hover v-slot="{ isHovering, props: hoverProps }">
+    <v-hover v-slot="{ isHovering, props: hoverProps }" open-delay="200">
       <div v-bind="hoverProps">
         <span>{{ name }}</span>
 
         <v-dialog max-width="600" persistent>
-          <template v-slot:activator="{ props: activatorProps, isActive: isDialogActive }">
+          <template v-slot:activator="{ props: activatorProps }">
             <v-icon-btn
               v-bind="activatorProps"
               :icon="mdiSquareEditOutline"
-              :style="{ visibility: isHovering || isDialogActive ? undefined : 'hidden' }"
+              :style="{ visibility: isHovering ? undefined : 'hidden' }"
               opacity="50%"
             />
           </template>
@@ -93,6 +95,33 @@ const isDead = computed<boolean>(
                 "
                 @cancel="isDialogOpen.value = false"
               />
+            </v-card>
+          </template>
+        </v-dialog>
+
+        <v-dialog max-width="500">
+          <template v-slot:activator="{ props: activatorProps }">
+            <v-icon-btn
+              v-bind="activatorProps"
+              :icon="mdiDeleteOutline"
+              :style="{ visibility: isHovering ? undefined : 'hidden' }"
+              icon-color="error"
+              opacity="50%"
+            />
+          </template>
+
+          <template v-slot:default="{ isActive: isDialogActive }">
+            <v-card :title="`Eliminare ${name}?`" text="L'operazione non può essere annullata.">
+              <v-card-actions>
+                <v-spacer />
+                <v-btn text="Non eliminare" variant="plain" @click="isDialogActive.value = false" />
+                <v-btn
+                  color="error"
+                  text="Elimina"
+                  variant="tonal"
+                  @click="[$emit('requestDeletion'), (isDialogActive.value = false)]"
+                />
+              </v-card-actions>
             </v-card>
           </template>
         </v-dialog>

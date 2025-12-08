@@ -6,7 +6,7 @@ import InitiativeCount from "@model/InitiativeCount";
 
 import { useInitiativeTracker, type WithInitiative } from "@state/InitiativeTrackerState.ts";
 
-const { initiativesOrdered, currentInitiative } = useInitiativeTracker();
+const { initiativesOrdered, removeInitiative, currentInitiative } = useInitiativeTracker();
 
 function isCreature(item: WithInitiative): item is Creature {
   return item instanceof Creature;
@@ -30,6 +30,7 @@ function isInitiativeCount(item: WithInitiative): item is InitiativeCount {
         v-model:armorClass="item.armorClass"
         v-model:hitPointsCurrent="item.hitPointsCurrent"
         v-model:hitPointsMax="item.hitPointsMax"
+        @requestDeletion="removeInitiative(item)"
       />
       <InitiativeCountInitiativeItem
         v-else-if="isInitiativeCount(item)"

@@ -51,6 +51,12 @@ function addInitiative(initiative: WithInitiative): void {
   initiatives.value.push(initiative);
 }
 
+function removeInitiative(toRemove: WithInitiative): void {
+  if (!toRemove) return;
+
+  initiatives.value = initiatives.value.filter((init) => toRemove !== init);
+}
+
 function clearAll(): void {
   initiatives.value.splice(0, initiatives.value.length);
   currentInitiative.value = undefined;
@@ -85,6 +91,7 @@ export function useInitiativeTracker() {
     initiatives,
     initiativesOrdered,
     addInitiative,
+    removeInitiative,
     clearAll,
 
     currentInitiative,

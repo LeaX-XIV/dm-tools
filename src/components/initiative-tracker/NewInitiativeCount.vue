@@ -39,7 +39,12 @@ function save() {
 </script>
 
 <template>
-  <v-btn prepend-icon="$initiativeCount" block @click.stop.prevent="open = true">Iniziativa</v-btn>
+  <v-btn
+    prepend-icon="$initiativeCount"
+    block
+    @click.stop.prevent="open = true"
+    text="Iniziativa"
+  />
 
   <v-dialog v-model="open" max-width="600" persistent>
     <v-card title="Iniziativa">
@@ -61,13 +66,13 @@ function save() {
           </v-row>
         </v-card-text>
 
-        <v-divider></v-divider>
+        <v-divider />
 
         <v-card-actions>
-          <v-spacer></v-spacer>
+          <v-spacer />
 
-          <v-btn type="reset" text="Annulla" variant="plain" @click="open = false"></v-btn>
-          <v-btn type="submit" color="primary" text="Salva" variant="tonal"></v-btn>
+          <v-btn type="reset" text="Annulla" variant="plain" @click="open = false" />
+          <v-btn type="submit" color="primary" text="Salva" variant="tonal" />
         </v-card-actions>
       </v-form>
     </v-card>
