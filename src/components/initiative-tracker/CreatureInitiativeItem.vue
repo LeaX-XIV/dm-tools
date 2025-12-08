@@ -48,7 +48,7 @@ const isDead = computed<boolean>(
 
 <template>
   <v-list-item class="mx-auto px-6 py-3" :elevation="isDead ? 0 : 3">
-    <v-hover v-slot="{ isHovering, props: hoverProps }">
+    <v-hover v-slot="{ isHovering, props: hoverProps }" open-delay="200">
       <div v-bind="hoverProps">
         <span>{{ name }}</span>
 
