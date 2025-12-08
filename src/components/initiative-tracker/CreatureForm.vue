@@ -70,6 +70,11 @@ const hitPointsMaxRules = ref<ValidationRule[]>([
     !v ||
     (typeof v === "number" && v > 0 && Number.isInteger(v)) ||
     "Hit points max must be a positive integer",
+  (v: number) =>
+    !hitPointsCurrent.value ||
+    !v ||
+    v >= hitPointsCurrent.value ||
+    `Cannot be less than ${hitPointsCurrent.value}`,
 ]);
 const hitPointsCurrentRules = ref<ValidationRule[]>([
   (v: number) =>
