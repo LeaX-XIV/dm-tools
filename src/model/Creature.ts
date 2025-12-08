@@ -9,12 +9,15 @@ export default class Creature {
   hitPointsMax: number | null;
   hitPointsCurrent: number | null;
 
+  isPlayer: boolean;
+
   constructor(
     name: string,
     initiative: number,
     armorClass?: number,
     hitPointsMax?: number,
     hitPointsCurrent?: number,
+    isPlayer?: boolean,
   ) {
     this.name = name;
     this.initiative = initiative;
@@ -22,6 +25,8 @@ export default class Creature {
     this.armorClass = armorClass ?? null;
     this.hitPointsMax = hitPointsMax ?? null;
     this.hitPointsCurrent = hitPointsCurrent ?? null;
+
+    this.isPlayer = isPlayer ?? false;
   }
 
   get isDead(): boolean {

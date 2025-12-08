@@ -15,10 +15,6 @@ function isCreature(item: WithInitiative): item is Creature {
 function isInitiativeCount(item: WithInitiative): item is InitiativeCount {
   return item instanceof InitiativeCount;
 }
-
-function updateHitPointsCurrent(creature: Creature, newHitPoints: number | null) {
-  creature.hitPointsCurrent = newHitPoints;
-}
 </script>
 
 <template>
@@ -27,9 +23,13 @@ function updateHitPointsCurrent(creature: Creature, newHitPoints: number | null)
     <template v-for="(item, idx) in initiativesOrdered" :key="idx">
       <CreatureInitiative
         v-if="isCreature(item)"
-        :creature="item"
-        :active="item.initiative === currentInitiative"
-        @update-hit-points-current="(newHitPoints) => updateHitPointsCurrent(item, newHitPoints)"
+        :isActive="item.initiative === currentInitiative"
+        :isPlayer="item.isPlayer"
+        v-model:name="item.name"
+        v-model:initiaitve="item.initiative"
+        v-model:armorClass="item.armorClass"
+        v-model:hitPointsCurrent="item.hitPointsCurrent"
+        v-model:hitPointsMax="item.hitPointsMax"
       />
       <InitiativeCountInitiativeItem
         v-else-if="isInitiativeCount(item)"
