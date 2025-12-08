@@ -9,13 +9,13 @@ const form = ref<VForm>();
 const emits = defineEmits<{
   (
     e: "confirm",
-    isPlayer: boolean,
-    name: string,
-    initiative: number,
-    armorClass: number | null,
-    hitPointsCurrent: number | null,
-    hitPointsMax: number | null,
-    number: number,
+    newIsPlayer: boolean,
+    newName: string,
+    newInitiative: number,
+    newArmorClass: number | null,
+    newHitPointsCurrent: number | null,
+    newHitPointsMax: number | null,
+    newNumber: number,
   ): void;
   (e: "cancel"): void;
 }>();

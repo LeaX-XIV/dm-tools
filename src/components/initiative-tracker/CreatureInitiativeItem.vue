@@ -23,7 +23,7 @@ const hasMaxHp = computed(() => hitPointsMax.value !== null);
 
 const hasAllHp = computed(() => hasCurrentHp.value && hasMaxHp.value);
 
-function edit(
+function onConfirmEdit(
   newIsPlayer: boolean,
   newName: string,
   newInitiative: number,
@@ -69,7 +69,28 @@ const isDead = computed<boolean>(
                 :armor-class="armorClass ?? undefined"
                 :hit-points-current="hitPointsCurrent ?? undefined"
                 :hit-points-max="hitPointsMax ?? undefined"
-                @confirm="edit"
+                @confirm="
+                  (
+                    newIsPlayer,
+                    newName,
+                    newInitiaitve,
+                    newArmorClass,
+                    newHitPointsCurrent,
+                    newHitPointsMax,
+                    newNumber,
+                  ) => {
+                    onConfirmEdit(
+                      newIsPlayer,
+                      newName,
+                      newInitiaitve,
+                      newArmorClass,
+                      newHitPointsCurrent,
+                      newHitPointsMax,
+                      newNumber,
+                    );
+                    isDialogOpen.value = false;
+                  }
+                "
                 @cancel="isDialogOpen.value = false"
               />
             </v-card>
