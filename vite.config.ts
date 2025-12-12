@@ -35,6 +35,7 @@ export default defineConfig({
       "@decorators": fileURLToPath(new URL("./src/decorators", import.meta.url)),
       "@model": fileURLToPath(new URL("./src/model", import.meta.url)),
       "@state": fileURLToPath(new URL("./src/state", import.meta.url)),
+      "@utils": fileURLToPath(new URL("./src/utils", import.meta.url)),
     },
   },
   test: {
