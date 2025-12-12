@@ -3,7 +3,7 @@
 - [ ] Initiative tracker
   - [ ] Create/Edit
     - [ ] Use letters for monster enumerations
-      - [ ] Create function to convert number (positive) to character(s)
+      - [x] Create function to convert number (positive) to character(s)
       - [ ] Apply function to monster name
     - [ ] Break initiative ties (for differend types of creatures and initiative counts)
     - [ ] Edit in bulk same type of monster
