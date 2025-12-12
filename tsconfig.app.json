@@ -6,6 +6,7 @@
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "lib": ["ES2023", "DOM"],
     "experimentalDecorators": true,
+    "types": ["vitest/globals"],
 
     "paths": {
       "@/*": ["./src/*"],

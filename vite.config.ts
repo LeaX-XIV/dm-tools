@@ -1,3 +1,5 @@
+/// <reference types="vitest/config" />
+
 import { fileURLToPath, URL } from "node:url";
 
 import { defineConfig } from "vite";
@@ -34,5 +36,12 @@ export default defineConfig({
       "@model": fileURLToPath(new URL("./src/model", import.meta.url)),
       "@state": fileURLToPath(new URL("./src/state", import.meta.url)),
     },
+  },
+  test: {
+    // enable jest-like global test APIs
+    globals: true,
+    // simulate DOM with happy-dom
+    // (requires installing happy-dom as a peer dependency)
+    environment: "happy-dom",
   },
 });
