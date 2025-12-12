@@ -23,18 +23,21 @@ export function intToLetters(num: number): string {
 
 function intToAlphabet(num: number, alphabet: Alphabet): string {
   const numInAlphabetBase = changeBase(num, alphabet.length);
-  if (numInAlphabetBase.length == 0) return num.toFixed(0);
+  if (numInAlphabetBase.length == 0) return "";
 
-  return numInAlphabetBase.map((index) => alphabet[index]).join("");
+  // It is not a standard base change. Need to subtract one from tens and higher positions.
+
+  return numInAlphabetBase
+    .map((idx, i, arr) => (arr.length > 1 && i === 0 ? idx - 1 : idx))
+    .map((idx) => alphabet[idx])
+    .join("");
 }
 
 function changeBase(num: number, newBase: number): number[] {
   if (!Number.isInteger(num)) return [];
-
   if (num < 0) return [];
 
   if (!Number.isInteger(newBase)) return [];
-
   if (newBase <= 1) return [];
 
   const converted = [];
@@ -42,9 +45,9 @@ function changeBase(num: number, newBase: number): number[] {
     const q = Math.floor(num / newBase);
     const r = num % newBase;
 
-    converted.push(r);
+    converted.unshift(r);
     num = q;
-  } while (num > 1);
+  } while (num >= 1);
 
   return converted;
 }
