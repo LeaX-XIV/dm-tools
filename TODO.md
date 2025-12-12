@@ -1,0 +1,18 @@
+- [ ] General
+  - [ ] Tab title and favicon
+- [ ] Initiative tracker
+  - [ ] Create/Edit
+    - [ ] Use letters for enemy enumerations
+    - [ ] Break initiative ties (for differend types of creatures and initiative counts)
+    - [ ] Edit in bulk same type of enemy
+    - [ ] Favourites for quick add (intended for party members)
+    - [ ] Custom icons for creatures
+    - [ ] Edit initiative count
+    - [ ] Delete initiative count
+  - [ ] Initiative management
+    - [ ] Enhance turn display (when no AC is provided)
+    - [ ] Display round number
+    - [ ] Reset rounds
+    - [ ] Undo next turn
+    - [ ] Display elapsed time per turn/round
+    - [ ] Manage creature conditions over time
