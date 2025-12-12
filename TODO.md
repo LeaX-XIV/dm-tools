@@ -4,7 +4,7 @@
   - [ ] Create/Edit
     - [ ] Use letters for monster enumerations
       - [x] Create function to convert number (positive) to character(s)
-      - [ ] Apply function to monster name
+      - [x] Apply function to monster name
     - [ ] Break initiative ties (for differend types of creatures and initiative counts)
     - [ ] Edit in bulk same type of monster
     - [ ] Favourites for quick add (intended for party members)

@@ -3,6 +3,8 @@ import { ref } from "vue";
 import CreatureForm from "./CreatureForm.vue";
 import Creature from "@model/Creature";
 
+import { intToLetters } from "@utils/formatter";
+
 const emit = defineEmits<{
   (e: "new-creature", creature: Creature): void;
 }>();
@@ -23,7 +25,7 @@ function save(
     emit(
       "new-creature",
       new Creature(
-        isPlayer ? name : `${name} ${i + 1}`,
+        isPlayer ? name : `${name} ${intToLetters(i)}`,
         initiative,
         armorClass ? Number(armorClass) : undefined,
         hitPointsMax ? Number(hitPointsMax) : undefined,
