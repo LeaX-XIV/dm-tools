@@ -2,9 +2,11 @@
   - [ ] Tab title and favicon
 - [ ] Initiative tracker
   - [ ] Create/Edit
-    - [ ] Use letters for enemy enumerations
+    - [x] Use letters for monster enumerations
+      - [x] Create function to convert number (positive) to character(s)
+      - [x] Apply function to monster name
     - [ ] Break initiative ties (for differend types of creatures and initiative counts)
-    - [ ] Edit in bulk same type of enemy
+    - [ ] Edit in bulk same type of monster
     - [ ] Favourites for quick add (intended for party members)
     - [ ] Custom icons for creatures
     - [ ] Edit initiative count
