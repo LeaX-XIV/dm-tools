@@ -1,5 +1,6 @@
-- [ ] General
-  - [ ] Tab title and favicon
+- [x] General
+  - [x] Page title
+  - [x] Favicon
 - [ ] Initiative tracker
   - [ ] Create/Edit
     - [x] Use letters for monster enumerations
