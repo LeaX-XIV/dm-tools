@@ -11,10 +11,10 @@
     - [ ] Custom icons for creatures
     - [ ] Edit initiative count
     - [ ] Delete initiative count
-    - [ ] Improve process
+    - [x] Improve process
       - [x] Separate hero and monster creation process
       - [x] Disallow type change (hero/monster)
-      - [ ] Avoid forgetting to set monster number
+      - [x] Avoid forgetting to set monster number
   - [ ] Initiative management
     - [ ] Enhance turn display (when no AC is provided)
     - [ ] Display round number
