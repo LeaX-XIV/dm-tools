@@ -1,6 +1,6 @@
-- [ ] General
+- [x] General
   - [x] Page title
-  - [ ] Favicon
+  - [x] Favicon
 - [ ] Initiative tracker
   - [ ] Create/Edit
     - [x] Use letters for monster enumerations
