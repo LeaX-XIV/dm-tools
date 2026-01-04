@@ -11,6 +11,23 @@ const emit = defineEmits<{
 
 const open = ref(false);
 
+let isCreatingPlayer: boolean | undefined = undefined;
+
+function openPlayer() {
+  isCreatingPlayer = true;
+  open.value = true;
+}
+
+function openMonster() {
+  isCreatingPlayer = false;
+  open.value = true;
+}
+
+function close() {
+  isCreatingPlayer = undefined;
+  open.value = false;
+}
+
 function save(
   isPlayer: boolean,
   name: string,
@@ -35,16 +52,17 @@ function save(
     );
   }
 
-  open.value = false;
+  close();
 }
 </script>
 
 <template>
-  <v-btn prepend-icon="$creature" block @click.stop.prevent="open = true" text="Creatura" />
+  <v-btn prepend-icon="$creature" block @click.stop.prevent="openPlayer" text="Eroe" />
+  <v-btn prepend-icon="$monster" block @click.stop.prevent="openMonster" text="Mostro" />
 
   <v-dialog v-model="open" max-width="600" persistent>
     <v-card title="Creatura">
-      <CreatureForm @confirm="save" @cancel="open = false" />
+      <CreatureForm :is-player="isCreatingPlayer" @confirm="save" @cancel="close" />
     </v-card>
   </v-dialog>
 </template>
