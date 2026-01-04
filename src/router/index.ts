@@ -1,4 +1,6 @@
+import { nextTick } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
+import type { RouteLocationNormalizedGeneric } from "vue-router";
 
 import InitiativeTracker from "@components/initiative-tracker/InitiativeTracker.vue";
 import InitiativeTrackerLeft from "@components/initiative-tracker/InitiativeTrackerLeft.vue";
@@ -25,8 +27,36 @@ const router = createRouter({
         // right: undefined,
         fab: InitiativeTrackerFab,
       },
+      meta: { title: () => "Initiative" },
     },
   ],
 });
+
+// https://github.com/vuejs/vue-router/issues/914#issuecomment-384477609
+router.afterEach((to) => {
+  nextTick(() => {
+    document.title = processTitle(to);
+  });
+});
+
+function processTitle(to: RouteLocationNormalizedGeneric): string {
+  const DEFAULT_TITLE = "DM Tools";
+
+  const metaTitle = to.meta.title;
+
+  if (typeof metaTitle === "undefined") return DEFAULT_TITLE;
+
+  let newTitle: string | null;
+  if (typeof metaTitle === "function") newTitle = metaTitle(to);
+  else if (typeof metaTitle === "string") newTitle = metaTitle;
+  else newTitle = null;
+
+  if (typeof newTitle === "undefined" || newTitle === null || newTitle.length === 0)
+    return DEFAULT_TITLE;
+
+  if (!newTitle.endsWith(DEFAULT_TITLE)) return `${newTitle} ・ ${DEFAULT_TITLE}`;
+
+  return newTitle;
+}
 
 export default router;

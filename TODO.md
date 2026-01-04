@@ -1,5 +1,5 @@
 - [ ] General
-  - [ ] Page title
+  - [x] Page title
   - [ ] Favicon
 - [ ] Initiative tracker
   - [ ] Create/Edit
