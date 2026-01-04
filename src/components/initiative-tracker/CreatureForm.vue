@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 import type { ValidationRule } from "vuetify";
 import type { VForm } from "vuetify/components";
@@ -45,7 +45,8 @@ const armorClass = ref(defaultArmorClass ?? null);
 const hitPointsCurrent = ref(defaultHitPointsCurrent ?? null);
 const hitPointsMax = ref(defaultHitPointsMax ?? null);
 
-const number = ref<number>(1);
+const number = ref<number | null>(null);
+watch(isPlayer, () => (number.value = isPlayer.value ? 1 : null), { immediate: true });
 
 const numberRules = ref<ValidationRule[]>([
   (v: number) => v !== null || "Number is required",
@@ -99,7 +100,7 @@ function submit() {
     armorClass.value,
     hitPointsCurrent.value,
     hitPointsMax.value,
-    number.value,
+    number.value!,
   );
 }
 </script>
@@ -114,8 +115,8 @@ function submit() {
             false-icon="$monster"
             true-icon="$hero"
             @change.stop.prevent="number = 1"
-            :disabled="isEdit"
             :label="isPlayer ? 'Eroe' : 'Mostro'"
+            :disabled="true"
           />
         </v-col>
         <v-col cols="6" md="4">
@@ -130,6 +131,8 @@ function submit() {
             :disabled="isEdit"
           />
         </v-col>
+      </v-row>
+      <v-row>
         <v-col cols="12" :md="isPlayer ? 4 : 8">
           <v-text-field v-model="name" label="Nome" :rules="nameRules" required />
         </v-col>
