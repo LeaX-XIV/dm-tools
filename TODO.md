@@ -13,7 +13,7 @@
     - [ ] Delete initiative count
     - [ ] Improve process
       - [x] Separate hero and monster creation process
-      - [ ] Disallow type change (hero/monster)
+      - [x] Disallow type change (hero/monster)
       - [ ] Avoid forgetting to set monster number
   - [ ] Initiative management
     - [ ] Enhance turn display (when no AC is provided)
