@@ -5,6 +5,7 @@ import type { RouteLocationNormalizedGeneric } from "vue-router";
 import InitiativeTracker from "@components/initiative-tracker/InitiativeTracker.vue";
 import InitiativeTrackerLeft from "@components/initiative-tracker/InitiativeTrackerLeft.vue";
 import InitiativeTrackerFab from "@components/initiative-tracker/InitiativeTrackerFab.vue";
+import NameGenerator from "@components/name-generator/NameGenerator.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,6 +29,17 @@ const router = createRouter({
         fab: InitiativeTrackerFab,
       },
       meta: { title: () => "Initiative" },
+    },
+    {
+      path: "/namegenerator",
+      name: "name generator",
+      components: {
+        // left: undefined,
+        default: NameGenerator,
+        // right: undefined,
+        // fab: undefined,
+      },
+      meta: { title: () => "Name generator" },
     },
   ],
 });

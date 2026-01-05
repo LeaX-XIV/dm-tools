@@ -24,13 +24,13 @@
     - [ ] Display elapsed time per turn/round
     - [ ] Manage creature conditions over time
 - [ ] Name generator
-  - [ ] Markov chain [implementation](https://www.roguebasin.com/index.php?title=Names_from_a_high_order_Markov_Process_and_a_simplified_Katz_back-off_scheme)
+  - [x] Markov chain [implementation](https://www.roguebasin.com/index.php?title=Names_from_a_high_order_Markov_Process_and_a_simplified_Katz_back-off_scheme)
     - [ ] Configurable options
-  - [ ] Generate 1
-  - [ ] Generate n
-  - [ ] View generated history
+  - [x] Generate 1
+  - [x] Generate n
+  - [x] View generated history
   - [ ] Categories
-    - [ ] Japanese family names
+    - [x] Japanese family names
     - [ ] Japanese given names (male)
     - [ ] Japanese given names (female)
     - [ ] Japanese family names (kanji + romaji)
@@ -41,3 +41,4 @@
     - [ ] Save name as favourite
     - [ ] View favourite names
     - [ ] Delete name from favourites
+  - [ ] Data attribution
