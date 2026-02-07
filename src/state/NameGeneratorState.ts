@@ -1,11 +1,18 @@
+import { ref } from "vue";
+import GeneratorData from "@model/GeneratorData";
 import { NameGenerator } from "@model/MarkovModel";
 
-let generator: NameGenerator;
+const categories = new Map<string, GeneratorData>();
 
-async function loadTrainigData(): Promise<string[] | null> {
+function addCategory(id: string, name: string, dataUriPath: string) {
+  categories.set(id, new GeneratorData(name, dataUriPath, id));
+}
+
+const selectedGenerator = ref<GeneratorData | null>(null);
+
+async function loadTrainigData(uri: URL | string): Promise<string[] | null> {
   try {
-    const url = new URL("/assets/name-generator/japanese-family-names.json", import.meta.url).href;
-    const response = await fetch(url);
+    const response = await fetch(uri);
     if (!response.ok) return null;
 
     return (await response.json()) as string[];
@@ -15,14 +22,45 @@ async function loadTrainigData(): Promise<string[] | null> {
   }
 }
 
-export async function useNameGenerator() {
-  if (typeof generator === "undefined") {
-    const trainingData = await loadTrainigData();
-    if (trainingData === null) throw new Error("Could not load data");
-    generator = new NameGenerator(trainingData);
+function selectGenerator(id: string): boolean {
+  const newGeneratorData = categories.get(id) ?? null;
+  selectedGenerator.value = newGeneratorData;
+  return selectedGenerator.value === null;
+}
+
+async function generate(): Promise<string | null> {
+  if (selectedGenerator.value === null) return null;
+
+  if (selectedGenerator.value.generator === null) {
+    if (selectedGenerator.value.data === null) {
+      if (selectedGenerator.value.dataUri === null) return null;
+
+      const data = await loadTrainigData(selectedGenerator.value.dataUri);
+      if (data === null) return null;
+
+      selectedGenerator.value.data = data;
+    }
+
+    selectedGenerator.value.generator = new NameGenerator(
+      selectedGenerator.value.data,
+      selectedGenerator.value.generatorOptions.order,
+      selectedGenerator.value.generatorOptions.prior,
+    );
   }
 
+  return selectedGenerator.value.generator.generate();
+}
+
+addCategory("JP001", "Cognomi giapponesi", "japanese-family-names.json");
+
+export function useNameGenerator() {
+  selectGenerator("JP001");
+
   return {
-    generate: generator.generate.bind(generator),
+    generatorsList: [...categories.entries()].map(([k, v]) => ({ id: k, name: v.name })),
+    selectedGenerator: selectedGenerator,
+    selectGenerator: selectGenerator,
+
+    generate: generate,
   };
 }
