@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import GeneratorData from "@model/GeneratorData";
 import { NameGenerator } from "@model/MarkovModel";
 
@@ -51,14 +51,21 @@ async function generate(): Promise<string | null> {
   return selectedGenerator.value.generator.generate();
 }
 
-addCategory("JP001", "Cognomi giapponesi", "japanese-family-names.json");
+addCategory("JP001", "Cognomi JP", "japanese-family-names.json");
 
 export function useNameGenerator() {
   selectGenerator("JP001");
 
   return {
     generatorsList: [...categories.entries()].map(([k, v]) => ({ id: k, name: v.name })),
-    selectedGenerator: selectedGenerator,
+    selectedGenerator: computed(() =>
+      !selectedGenerator.value
+        ? null
+        : {
+            id: selectedGenerator.value!.id,
+            name: selectedGenerator.value!.name,
+          },
+    ),
     selectGenerator: selectGenerator,
 
     generate: generate,

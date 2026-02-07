@@ -6,6 +6,7 @@ import InitiativeTracker from "@components/initiative-tracker/InitiativeTracker.
 import InitiativeTrackerLeft from "@components/initiative-tracker/InitiativeTrackerLeft.vue";
 import InitiativeTrackerFab from "@components/initiative-tracker/InitiativeTrackerFab.vue";
 import NameGenerator from "@components/name-generator/NameGenerator.vue";
+import NameGeneratorLeft from "@components/name-generator/NameGeneratorLeft.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,7 +35,7 @@ const router = createRouter({
       path: "/namegenerator",
       name: "name generator",
       components: {
-        // left: undefined,
+        left: NameGeneratorLeft,
         default: NameGenerator,
         // right: undefined,
         // fab: undefined,
