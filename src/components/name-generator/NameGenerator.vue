@@ -4,38 +4,26 @@ import { useNameGenerator } from "@state/NameGeneratorState";
 
 const HISTORY_COUNT = 10;
 
-const loadingError = ref<string>();
-const loading = ref<boolean>(true);
-
-const generateCb = ref<() => string>();
+const { selected, generate } = useNameGenerator();
 const generated = ref<string[]>([]);
 
-useNameGenerator()
-  .then(({ generate }) => {
-    generateCb.value = generate;
-    loading.value = false;
-  })
-  .catch((err) => {
-    loadingError.value = err ?? "Errore";
-    loading.value = false;
-  });
-
-function generateNewName(count: number = 1): void {
-  for (let i = 0; i < count; ++i) generated.value.push(generateCb.value!());
+async function generateNewName(count: number = 1): Promise<void> {
+  for (let i = 0; i < count; ++i) {
+    const newName = await generate();
+    if (newName !== null) generated.value.push(newName);
+  }
   while (generated.value.length > HISTORY_COUNT) generated.value.shift();
 }
 </script>
 
 <template>
-  <v-alert v-if="loadingError" title="Errore" :text="loadingError" color="error" />
-
-  <v-container v-else>
+  <v-container>
     <v-row class="pa-6">
       <v-spacer />
-      <v-btn v-if="!loading" @click="generateNewName()" color="primary" text="Genera" />
+      <v-btn v-if="selected !== null" @click="generateNewName()" color="primary" text="Genera" />
       <v-spacer />
       <v-btn
-        v-if="!loading"
+        v-if="selected !== null"
         @click="generateNewName(HISTORY_COUNT)"
         color="primary"
         :text="`Genera ${HISTORY_COUNT}`"

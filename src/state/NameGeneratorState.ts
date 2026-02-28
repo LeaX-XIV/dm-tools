@@ -1,28 +1,64 @@
-import { NameGenerator } from "@model/MarkovModel";
+import { computed, reactive, ref } from "vue";
+import GeneratorData, { type GeneratorEditable } from "@model/GeneratorData";
 
-let generator: NameGenerator;
+const generators = reactive(new Map<string, GeneratorData>());
+const selected = ref<GeneratorData | null>(null);
 
-async function loadTrainigData(): Promise<string[] | null> {
-  try {
-    const url = new URL("/assets/name-generator/japanese-family-names.json", import.meta.url).href;
-    const response = await fetch(url);
-    if (!response.ok) return null;
+function addGenerator(id: string, name: string, dataUriPath?: string) {
+  generators.set(id, new GeneratorData(name, dataUriPath, id));
 
-    return (await response.json()) as string[];
-  } catch (err: unknown) {
-    console.error(err);
-    return null;
-  }
+  if (generators.size === 1) select(id);
 }
 
-export async function useNameGenerator() {
-  if (typeof generator === "undefined") {
-    const trainingData = await loadTrainigData();
-    if (trainingData === null) throw new Error("Could not load data");
-    generator = new NameGenerator(trainingData);
-  }
+async function update(newCategory: GeneratorEditable) {
+  if (selected.value === null) return;
 
+  if (!generators.has(selected.value.id)) return;
+
+  const generator = generators.get(selected.value.id)!;
+  generator.name = newCategory.name;
+  generator.generatorOptions.trainingData = newCategory.generatorOptions.trainingData;
+  generator.generatorOptions.order = newCategory.generatorOptions.order;
+  generator.generatorOptions.prior = newCategory.generatorOptions.prior;
+
+  await generator.buildGenerator();
+
+  select(selected.value.id);
+}
+
+function select(id: string): boolean {
+  const newGeneratorData = generators.get(id) ?? null;
+  selected.value = newGeneratorData;
+  return selected.value === null;
+}
+
+async function generate(): Promise<string | null> {
+  if (selected.value === null) return null;
+
+  if (selected.value.generator === null) await selected.value.buildGenerator();
+
+  return selected.value.generator!.generate();
+}
+
+addGenerator("JP001", "Cognomi JP", "japanese-family-names.json");
+addGenerator("XX001", "Custom");
+
+export function useNameGenerator() {
   return {
-    generate: generator.generate.bind(generator),
+    list: computed(() => [...generators.entries()].map(([k, v]) => ({ id: k, name: v.name }))),
+    selected: computed(() =>
+      !selected.value
+        ? null
+        : {
+            id: selected.value!.id,
+            name: selected.value!.name,
+          },
+    ),
+
+    get: (id: string) => generators.get(id),
+    select: select,
+    update: update,
+
+    generate: generate,
   };
 }
