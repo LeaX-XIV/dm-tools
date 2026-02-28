@@ -4,7 +4,7 @@ import GeneratorData, { type GeneratorEditable } from "@model/GeneratorData";
 const generators = reactive(new Map<string, GeneratorData>());
 const selected = ref<GeneratorData | null>(null);
 
-function addGenerator(id: string, name: string, dataUriPath: string) {
+function addGenerator(id: string, name: string, dataUriPath?: string) {
   generators.set(id, new GeneratorData(name, dataUriPath, id));
 
   if (generators.size === 1) select(id);
@@ -41,6 +41,7 @@ async function generate(): Promise<string | null> {
 }
 
 addGenerator("JP001", "Cognomi JP", "japanese-family-names.json");
+addGenerator("XX001", "Custom");
 
 export function useNameGenerator() {
   return {

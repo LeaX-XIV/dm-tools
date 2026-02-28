@@ -14,6 +14,12 @@ function newId(): string {
   return "AAAAAA";
 }
 
+function toDataUrl(dataUriPath?: string) {
+  return dataUriPath
+    ? new URL(`${import.meta.env.BASE_URL}/name-generator/${dataUriPath}`, import.meta.url)
+    : DEFAULT.dataUri!;
+}
+
 export default class GeneratorData {
   id: string;
   name: string;
@@ -21,13 +27,10 @@ export default class GeneratorData {
   generator: NameGenerator | null;
   generatorOptions: GeneratorOptions;
 
-  constructor(name: string, dataUriPath: string, id?: string, order?: number, prior?: number) {
+  constructor(name: string, dataUriPath?: string, id?: string, order?: number, prior?: number) {
     this.id = id ?? newId();
     this.name = name;
-    this.dataUri = new URL(
-      `${import.meta.env.BASE_URL}/name-generator/${dataUriPath}`,
-      import.meta.url,
-    );
+    this.dataUri = toDataUrl(dataUriPath);
     this.generator = DEFAULT.generator!;
     this.generatorOptions = {
       trainingData: DEFAULT.generatorOptions!.trainingData,
@@ -44,7 +47,7 @@ export default class GeneratorData {
 
   async ensureTrainingData() {
     if (this.generatorOptions.trainingData.length === 0) {
-      if (this.dataUri === null) throw new Error();
+      if (this.dataUri === null) return;
 
       const data = await GeneratorData.loadTrainigData(this.dataUri);
       if (data === null) throw new Error();

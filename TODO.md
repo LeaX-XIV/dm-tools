@@ -36,7 +36,11 @@
     - [ ] Japanese family names (kanji + romaji)
     - [ ] Japanese given names (male) (kanji + romaji)
     - [ ] Japanese given names (female) (kanji + romaji)
+    - [x] Custom
+      - [x] Provide initial dictionary
+      - [x] Customize parameters
     - [ ] ...
+  - [ ] Highlight original names
   - [ ] Favourites
     - [ ] Save name as favourite
     - [ ] View favourite names
