@@ -3,10 +3,16 @@ import { uniform } from "@utils/random";
 type Char = string;
 type ExplodedString = Char[];
 
+export interface GeneratorOptions {
+  trainingData: string[];
+  order: number;
+  prior: number;
+}
+
 export class NameGenerator {
   model: MarkovModel;
 
-  constructor(trainingData: string[], order: number = 3, prior: number = 0.001) {
+  constructor({ trainingData = [], order = 3, prior = 0.001 }: GeneratorOptions) {
     const names = new Set<string>();
     const support = new Set<string>();
 

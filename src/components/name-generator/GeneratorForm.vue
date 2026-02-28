@@ -29,7 +29,7 @@ async function reset() {
   await generator.ensureTrainingData();
 
   generatorName.value = generator.name;
-  dictionaryString.value = generator.data?.join(" ") ?? "";
+  dictionaryString.value = generator.generatorOptions.trainingData.join(" ");
   generatorOrder.value = generator.generatorOptions.order;
   generatorPrior.value = generator.generatorOptions.prior;
 
@@ -42,7 +42,7 @@ function submit() {
   const newGeneratorData = generator.clone();
 
   newGeneratorData.name = generatorName.value;
-  newGeneratorData.data = dictionaryArray.value;
+  newGeneratorData.generatorOptions.trainingData = dictionaryArray.value;
   newGeneratorData.generatorOptions.order = generatorOrder.value;
   newGeneratorData.generatorOptions.prior = generatorPrior.value;
 

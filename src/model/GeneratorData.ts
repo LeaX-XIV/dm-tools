@@ -1,10 +1,10 @@
-import { NameGenerator } from "./MarkovModel";
+import { NameGenerator, type GeneratorOptions } from "./MarkovModel";
 
 const DEFAULT: Partial<GeneratorData> = {
-  data: null,
   dataUri: null,
   generator: null,
   generatorOptions: {
+    trainingData: [],
     order: 3,
     prior: 0.001,
   },
@@ -17,24 +17,20 @@ function newId(): string {
 export default class GeneratorData {
   id: string;
   name: string;
-  data: string[] | null;
   dataUri: URL | null;
   generator: NameGenerator | null;
-  generatorOptions: {
-    order: number;
-    prior: number;
-  };
+  generatorOptions: GeneratorOptions;
 
   constructor(name: string, dataUriPath: string, id?: string, order?: number, prior?: number) {
     this.id = id ?? newId();
     this.name = name;
-    this.data = DEFAULT.data!;
     this.dataUri = new URL(
       `${import.meta.env.BASE_URL}/name-generator/${dataUriPath}`,
       import.meta.url,
     );
     this.generator = DEFAULT.generator!;
     this.generatorOptions = {
+      trainingData: DEFAULT.generatorOptions!.trainingData,
       order: order ?? DEFAULT.generatorOptions!.order,
       prior: prior ?? DEFAULT.generatorOptions!.prior,
     };
@@ -43,21 +39,17 @@ export default class GeneratorData {
   async buildGenerator() {
     await this.ensureTrainingData();
 
-    this.generator = new NameGenerator(
-      this.data!,
-      this.generatorOptions.order,
-      this.generatorOptions.prior,
-    );
+    this.generator = new NameGenerator(this.generatorOptions);
   }
 
   async ensureTrainingData() {
-    if (this.data === null) {
+    if (this.generatorOptions.trainingData.length === 0) {
       if (this.dataUri === null) throw new Error();
 
       const data = await GeneratorData.loadTrainigData(this.dataUri);
       if (data === null) throw new Error();
 
-      this.data = data;
+      this.generatorOptions.trainingData = data;
     }
   }
 
@@ -66,18 +58,14 @@ export default class GeneratorData {
 
     cloned.id = this.id;
     cloned.name = this.name;
-    cloned.data = this.data;
     cloned.dataUri = this.dataUri;
     cloned.generatorOptions = {
+      trainingData: this.generatorOptions.trainingData,
       order: this.generatorOptions.order,
       prior: this.generatorOptions.prior,
     };
 
-    cloned.generator = new NameGenerator(
-      cloned?.data ?? [],
-      cloned.generatorOptions.order,
-      cloned.generatorOptions.prior,
-    );
+    cloned.generator = new NameGenerator(cloned.generatorOptions);
 
     return cloned;
   }
