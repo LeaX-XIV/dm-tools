@@ -1,4 +1,4 @@
-import type { NameGenerator } from "./MarkovModel";
+import { NameGenerator } from "./MarkovModel";
 
 const DEFAULT: Partial<GeneratorData> = {
   data: null,
@@ -38,5 +38,59 @@ export default class GeneratorData {
       order: order ?? DEFAULT.generatorOptions!.order,
       prior: prior ?? DEFAULT.generatorOptions!.prior,
     };
+  }
+
+  async buildGenerator() {
+    await this.ensureTrainingData();
+
+    this.generator = new NameGenerator(
+      this.data!,
+      this.generatorOptions.order,
+      this.generatorOptions.prior,
+    );
+  }
+
+  async ensureTrainingData() {
+    if (this.data === null) {
+      if (this.dataUri === null) throw new Error();
+
+      const data = await GeneratorData.loadTrainigData(this.dataUri);
+      if (data === null) throw new Error();
+
+      this.data = data;
+    }
+  }
+
+  clone(): GeneratorData {
+    const cloned = new GeneratorData("", "");
+
+    cloned.id = this.id;
+    cloned.name = this.name;
+    cloned.data = this.data;
+    cloned.dataUri = this.dataUri;
+    cloned.generatorOptions = {
+      order: this.generatorOptions.order,
+      prior: this.generatorOptions.prior,
+    };
+
+    cloned.generator = new NameGenerator(
+      cloned?.data ?? [],
+      cloned.generatorOptions.order,
+      cloned.generatorOptions.prior,
+    );
+
+    return cloned;
+  }
+
+  static async loadTrainigData(uri: URL | string): Promise<string[] | null> {
+    try {
+      const response = await fetch(uri);
+      if (!response.ok) return null;
+
+      return (await response.json()) as string[];
+    } catch (err: unknown) {
+      console.error(err);
+      return null;
+    }
   }
 }
