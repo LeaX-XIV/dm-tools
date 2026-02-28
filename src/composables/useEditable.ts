@@ -9,8 +9,7 @@ export function useEditable(...props: Ref<unknown>[]) {
 
   const isDirty = ref(false);
 
-  watch(props, (n, o) => {
-    console.debug("dirty", o, n);
+  watch(props, (n) => {
     isDirty.value = n
       .map((e, i) => [e, originals[i]])
       .map(([n, o]) => !equals(n, o))
@@ -22,7 +21,6 @@ export function useEditable(...props: Ref<unknown>[]) {
     reset: () => {
       originals = props.map((e) => toValue(e));
       isDirty.value = false;
-      console.debug("Resetting dirty bit");
     },
   };
 }

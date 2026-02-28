@@ -1,5 +1,5 @@
 import { computed, reactive, ref } from "vue";
-import GeneratorData from "@model/GeneratorData";
+import GeneratorData, { type GeneratorEditable } from "@model/GeneratorData";
 
 const categories = reactive(new Map<string, GeneratorData>());
 
@@ -7,13 +7,20 @@ function addCategory(id: string, name: string, dataUriPath: string) {
   categories.set(id, new GeneratorData(name, dataUriPath, id));
 }
 
-function updateSelectedCategory(newCategory: GeneratorData) {
-  if (!categories.has(newCategory.id)) return;
+async function updateSelectedCategory(newCategory: GeneratorEditable) {
+  if (selectedGenerator.value === null) return;
 
-  categories.delete(newCategory.id);
-  categories.set(newCategory.id, newCategory);
+  if (!categories.has(selectedGenerator.value.id)) return;
 
-  selectGenerator(newCategory.id);
+  const generator = categories.get(selectedGenerator.value.id)!;
+  generator.name = newCategory.name;
+  generator.generatorOptions.trainingData = newCategory.generatorOptions.trainingData;
+  generator.generatorOptions.order = newCategory.generatorOptions.order;
+  generator.generatorOptions.prior = newCategory.generatorOptions.prior;
+
+  await generator.buildGenerator();
+
+  selectGenerator(selectedGenerator.value.id);
 }
 
 const selectedGenerator = ref<GeneratorData | null>(null);

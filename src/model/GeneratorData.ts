@@ -82,3 +82,5 @@ export default class GeneratorData {
     }
   }
 }
+
+export type GeneratorEditable = Pick<GeneratorData, "name" | "generatorOptions">;

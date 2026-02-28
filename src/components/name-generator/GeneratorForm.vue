@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
 import { VForm } from "vuetify/components";
-import GeneratorData from "@model/GeneratorData";
+import { useEditable } from "@/composables/useEditable";
+import type { GeneratorEditable } from "@model/GeneratorData";
 
 interface Props {
-  generator: GeneratorData;
+  generator: Omit<GeneratorEditable, "genetator">;
 }
 
 interface Emits {
-  (e: "save", generator: GeneratorData): void;
+  (e: "save", generator: GeneratorEditable): void;
 }
 
 const { generator } = defineProps<Props>();
@@ -17,36 +18,52 @@ const emit = defineEmits<Emits>();
 const form = ref<VForm>();
 
 const generatorName = ref<string>(generator.name);
-const dictionaryString = ref<string>("");
+const dictionaryString = ref<string>(generator.generatorOptions.trainingData.join(" "));
 const generatorOrder = ref<number>(generator.generatorOptions.order);
 const generatorPrior = ref<number>(generator.generatorOptions.prior);
 
 const dictionaryArray = computed(() => dictionaryString.value.split(/\s+/gm));
 
+const { isDirty, reset: resetDirty } = useEditable(
+  generatorName,
+  dictionaryArray,
+  generatorOrder,
+  generatorPrior,
+);
+
 onMounted(reset);
 
 async function reset() {
-  await generator.ensureTrainingData();
-
   generatorName.value = generator.name;
   dictionaryString.value = generator.generatorOptions.trainingData.join(" ");
   generatorOrder.value = generator.generatorOptions.order;
   generatorPrior.value = generator.generatorOptions.prior;
 
+  resetDirty();
   form.value?.resetValidation();
 }
 
 function submit() {
+  if (!isDirty.value) {
+    emit("save", generator);
+
+    resetDirty();
+
+    return;
+  }
+
   if (!form.value?.isValid) return;
 
-  const newGeneratorData = generator.clone();
+  emit("save", {
+    name: generatorName.value,
+    generatorOptions: {
+      trainingData: dictionaryArray.value,
+      order: generatorOrder.value,
+      prior: generatorPrior.value,
+    },
+  });
 
-  newGeneratorData.name = generatorName.value;
-  newGeneratorData.generatorOptions.trainingData = dictionaryArray.value;
-  newGeneratorData.generatorOptions.order = generatorOrder.value;
-  newGeneratorData.generatorOptions.prior = generatorPrior.value;
-
-  emit("save", newGeneratorData);
+  resetDirty();
 }
 </script>
 
