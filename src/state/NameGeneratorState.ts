@@ -1,18 +1,21 @@
 import { computed, reactive, ref } from "vue";
 import GeneratorData, { type GeneratorEditable } from "@model/GeneratorData";
 
-const categories = reactive(new Map<string, GeneratorData>());
+const generators = reactive(new Map<string, GeneratorData>());
+const selected = ref<GeneratorData | null>(null);
 
-function addCategory(id: string, name: string, dataUriPath: string) {
-  categories.set(id, new GeneratorData(name, dataUriPath, id));
+function addGenerator(id: string, name: string, dataUriPath: string) {
+  generators.set(id, new GeneratorData(name, dataUriPath, id));
+
+  if (generators.size === 1) select(id);
 }
 
-async function updateSelectedCategory(newCategory: GeneratorEditable) {
-  if (selectedGenerator.value === null) return;
+async function update(newCategory: GeneratorEditable) {
+  if (selected.value === null) return;
 
-  if (!categories.has(selectedGenerator.value.id)) return;
+  if (!generators.has(selected.value.id)) return;
 
-  const generator = categories.get(selectedGenerator.value.id)!;
+  const generator = generators.get(selected.value.id)!;
   generator.name = newCategory.name;
   generator.generatorOptions.trainingData = newCategory.generatorOptions.trainingData;
   generator.generatorOptions.order = newCategory.generatorOptions.order;
@@ -20,42 +23,40 @@ async function updateSelectedCategory(newCategory: GeneratorEditable) {
 
   await generator.buildGenerator();
 
-  selectGenerator(selectedGenerator.value.id);
+  select(selected.value.id);
 }
 
-const selectedGenerator = ref<GeneratorData | null>(null);
-
-function selectGenerator(id: string): boolean {
-  const newGeneratorData = categories.get(id) ?? null;
-  selectedGenerator.value = newGeneratorData;
-  return selectedGenerator.value === null;
+function select(id: string): boolean {
+  const newGeneratorData = generators.get(id) ?? null;
+  selected.value = newGeneratorData;
+  return selected.value === null;
 }
 
 async function generate(): Promise<string | null> {
-  if (selectedGenerator.value === null) return null;
+  if (selected.value === null) return null;
 
-  if (selectedGenerator.value.generator === null) await selectedGenerator.value.buildGenerator();
+  if (selected.value.generator === null) await selected.value.buildGenerator();
 
-  return selectedGenerator.value.generator!.generate();
+  return selected.value.generator!.generate();
 }
 
-addCategory("JP001", "Cognomi JP", "japanese-family-names.json");
+addGenerator("JP001", "Cognomi JP", "japanese-family-names.json");
 
 export function useNameGenerator() {
-  selectGenerator("JP001");
-
   return {
-    generatorsList: [...categories.entries()].map(([k, v]) => ({ id: k, name: v.name })),
-    selectedGenerator: computed(() =>
-      !selectedGenerator.value
+    list: computed(() => [...generators.entries()].map(([k, v]) => ({ id: k, name: v.name }))),
+    selected: computed(() =>
+      !selected.value
         ? null
         : {
-            id: selectedGenerator.value!.id,
-            name: selectedGenerator.value!.name,
+            id: selected.value!.id,
+            name: selected.value!.name,
           },
     ),
-    selectGenerator: selectGenerator,
-    updateSelectedCategory: updateSelectedCategory,
+
+    get: (id: string) => generators.get(id),
+    select: select,
+    update: update,
 
     generate: generate,
   };

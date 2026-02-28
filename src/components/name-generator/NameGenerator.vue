@@ -4,7 +4,7 @@ import { useNameGenerator } from "@state/NameGeneratorState";
 
 const HISTORY_COUNT = 10;
 
-const { selectedGenerator, generate } = useNameGenerator();
+const { selected, generate } = useNameGenerator();
 const generated = ref<string[]>([]);
 
 async function generateNewName(count: number = 1): Promise<void> {
@@ -20,15 +20,10 @@ async function generateNewName(count: number = 1): Promise<void> {
   <v-container>
     <v-row class="pa-6">
       <v-spacer />
-      <v-btn
-        v-if="selectedGenerator !== null"
-        @click="generateNewName()"
-        color="primary"
-        text="Genera"
-      />
+      <v-btn v-if="selected !== null" @click="generateNewName()" color="primary" text="Genera" />
       <v-spacer />
       <v-btn
-        v-if="selectedGenerator !== null"
+        v-if="selected !== null"
         @click="generateNewName(HISTORY_COUNT)"
         color="primary"
         :text="`Genera ${HISTORY_COUNT}`"

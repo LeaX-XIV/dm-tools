@@ -25,7 +25,7 @@
     - [ ] Manage creature conditions over time
 - [ ] Name generator
   - [x] Markov chain [implementation](https://www.roguebasin.com/index.php?title=Names_from_a_high_order_Markov_Process_and_a_simplified_Katz_back-off_scheme)
-    - [ ] Configurable options
+    - [x] Configurable options
   - [x] Generate 1
   - [x] Generate n
   - [x] View generated history
