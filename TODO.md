@@ -1,6 +1,7 @@
 - [x] General
   - [x] Page title
   - [x] Favicon
+  - [ ] Router imports
 - [ ] Initiative tracker
   - [ ] Create/Edit
     - [x] Use letters for monster enumerations
@@ -46,3 +47,10 @@
     - [ ] View favourite names
     - [ ] Delete name from favourites
   - [ ] Data attribution
+- [ ] PC Tools
+  - [ ] Save in memory
+  - [ ] Restore from memory
+  - [ ] Create
+  - [ ] Delete
+  - [ ] Select from list
+  - [ ] Custom fields
