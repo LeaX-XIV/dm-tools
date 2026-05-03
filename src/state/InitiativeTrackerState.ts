@@ -1,44 +1,30 @@
-import { ref, computed, type WatchHandle, watchEffect } from "vue";
-import { fromJSON } from "@decorators/JsonSerializable";
+import { computed } from "vue";
+import { useStorage } from "@/composables/useStorage";
 
 const STORAGE_KEY: string = "INITIATIVE_TRACKER";
-const STORAGE: Storage = localStorage;
 const DEFAULT_VALUE: InitiativeTrackerState = { initiatives: [], current: undefined };
-
-let WATCHER: WatchHandle;
 
 type InitiativeTrackerState = {
   initiatives: WithInitiative[];
   current: number | undefined;
 };
 
-function readFromStorage(): InitiativeTrackerState {
-  const inStorage: string | null = STORAGE.getItem(STORAGE_KEY);
-  if (inStorage === null) return DEFAULT_VALUE;
+const { initiatives, currentInitiative } = (function () {
+  const fromStorage = useStorage<InitiativeTrackerState>(DEFAULT_VALUE, STORAGE_KEY);
 
-  try {
-    return JSON.parse(inStorage, fromJSON) as InitiativeTrackerState;
-  } catch {
-    return DEFAULT_VALUE;
-  }
-}
+  const initiatives = computed({
+    get: () => fromStorage.value.initiatives,
+    set: (v) => (fromStorage.value.initiatives = v),
+  });
 
-function writeToStorage(): void {
-  try {
-    const currentState: InitiativeTrackerState = {
-      initiatives: initiatives.value,
-      current: currentInitiative.value,
-    };
+  const currentInitiative = computed({
+    get: () => fromStorage.value.current,
+    set: (v) => (fromStorage.value.current = v),
+  });
 
-    STORAGE.setItem(STORAGE_KEY, JSON.stringify(currentState));
-  } catch {
-    STORAGE.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_VALUE));
-  }
-}
+  return { initiatives, currentInitiative };
+})();
 
-const savedState = readFromStorage();
-
-const initiatives = ref<WithInitiative[]>(savedState.initiatives);
 const initiativesOrdered = computed(() => initiatives.value.toSorted(orderByInitiative));
 
 function orderByInitiative(a: WithInitiative, b: WithInitiative): number {
@@ -62,7 +48,6 @@ function clearAll(): void {
   currentInitiative.value = undefined;
 }
 
-const currentInitiative = ref<number | undefined>(savedState.current);
 const canAdvanceInitiative = computed(() => initiatives.value.length > 1);
 
 function advanceInitiative(): void {
@@ -85,8 +70,6 @@ export interface WithInitiative {
 }
 
 export function useInitiativeTracker() {
-  if (typeof WATCHER === "undefined") WATCHER = watchEffect(writeToStorage);
-
   return {
     initiatives,
     initiativesOrdered,
