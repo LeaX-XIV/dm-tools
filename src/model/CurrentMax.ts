@@ -1,5 +1,7 @@
+import JsonSerializable from "@/decorators/JsonSerializable";
 import clamp from "@utils/clamp";
 
+@JsonSerializable
 export default class CurrentMax {
   private _min: number = 0;
   private _max: number = 0;
