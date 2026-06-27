@@ -48,9 +48,9 @@
     - [ ] Delete name from favourites
   - [ ] Data attribution
 - [ ] PC Tools
-  - [ ] Save in memory
-  - [ ] Restore from memory
-  - [ ] Create
+  - [x] Save in memory
+  - [x] Restore from memory
+  - [x] Create
   - [ ] Delete
   - [ ] Select from list
   - [ ] Custom fields
