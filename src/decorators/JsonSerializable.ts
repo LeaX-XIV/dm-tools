@@ -36,13 +36,13 @@ export function fromJSON(_: string, val: unknown) {
   return val;
 }
 
-function construct(constructor: Constructor, values: { [key: string]: unknown }) {
+function construct(constructor: Constructor, values: { [key: string]: unknown }): Constructor {
   const emptyObj = Reflect.construct(constructor, []);
 
   for (const [name, value] of Object.entries(values)) {
     if (name === TYPE_KEY) continue;
 
-    emptyObj[name] = value;
+    emptyObj[name] = fromJSON(name, value);
   }
 
   return emptyObj;

@@ -7,6 +7,7 @@ import InitiativeTrackerLeft from "@components/initiative-tracker/InitiativeTrac
 import InitiativeTrackerFab from "@components/initiative-tracker/InitiativeTrackerFab.vue";
 import NameGenerator from "@components/name-generator/NameGenerator.vue";
 import NameGeneratorLeft from "@components/name-generator/NameGeneratorLeft.vue";
+import PcTools from "@/components/pc-tools/PcTools.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,6 +42,17 @@ const router = createRouter({
         // fab: undefined,
       },
       meta: { title: () => "Name generator" },
+    },
+    {
+      path: "/pc-tools",
+      name: "PC Tools",
+      components: {
+        // left: undefined,
+        default: PcTools,
+        // right: undefined,
+        // fab: undefined,
+      },
+      meta: { title: () => "PC Tools" },
     },
   ],
 });
