@@ -57,6 +57,14 @@ export default class CurrentMax {
     return this;
   }
 
+  static parse(value?: number | CurrentMax): CurrentMax {
+    if (value instanceof CurrentMax) return value;
+
+    if (typeof value === "number") return new CurrentMax(value, value);
+
+    return new CurrentMax(0, 0);
+  }
+
   private modify(delta: number): number {
     const prev = this.current;
     this.current += delta;
