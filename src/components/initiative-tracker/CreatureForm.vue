@@ -46,7 +46,7 @@ const hitPointsCurrent = ref(defaultHitPointsCurrent ?? null);
 const hitPointsMax = ref(defaultHitPointsMax ?? null);
 
 const number = ref<number | null>(null);
-watch(isPlayer, () => (number.value = isPlayer.value ? 1 : null), { immediate: true });
+watch(isPlayer, () => (number.value = isEdit ? 1 : isPlayer.value ? 1 : null), { immediate: true });
 
 const numberRules = ref<ValidationRule[]>([
   (v: number) => v !== null || "Number is required",
